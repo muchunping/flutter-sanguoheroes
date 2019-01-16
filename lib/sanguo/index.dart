@@ -63,49 +63,190 @@ class _LinearProgressIndicatorPainter extends CustomPainter {
 }
 
 class TestApp extends StatelessWidget {
+  final style = TextStyle(color: Colors.black, fontSize: 12.0);
+  final Widget divider1 = Divider(
+    color: Colors.blue,
+  );
+  final Widget divider2 = Divider(color: Colors.green);
+
   Widget _buildStatusBars() {
     return Column(
       children: <Widget>[
         Expanded(
-            child: Container(
-          color: Colors.green,
           child: Row(
             children: <Widget>[
-              Padding(padding: EdgeInsets.only(left: 8)),
-              Text("ANCDEFG"),
-              FlatButton(onPressed: null, child: Icon(Icons.airline_seat_flat))
+              Padding(padding: EdgeInsets.only(left: 4)),
+              Text("江湖小虾米"),
+              Spacer(),
+              Container(
+                width: 45,
+                height: 25,
+                child: RaisedButton(
+                    color: Colors.green,
+                    splashColor: Colors.green.shade800,
+                    padding: EdgeInsets.all(0),
+                    onPressed: () {},
+                    child: Text("详情")),
+              ),
             ],
           ),
-        )),
-        Container(
-          height: 1,
-          color: Colors.red,
-        ),
-        Container(
-          width: double.infinity,
-          height: 18,
-          decoration: BoxDecoration(
-            border: Border.all(color: Colors.green),
-          ),
-          child: CustomPaint(
-            painter: _LinearProgressIndicatorPainter(value: 0.9),
-          ),
         ),
         Container(
           height: 1,
           color: Colors.red,
         ),
+        Stack(
+          children: <Widget>[
+            Container(
+              width: double.infinity,
+              height: 18,
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.green),
+              ),
+              child: CustomPaint(
+                painter: _LinearProgressIndicatorPainter(value: 0.9),
+              ),
+            ),
+            Container(
+              height: 18,
+              padding: EdgeInsets.only(left: 2),
+              child: Text(
+                "HP:9000/9999",
+                style: style,
+              ),
+              alignment: Alignment.centerLeft,
+            )
+          ],
+        ),
         Container(
-          width: double.infinity,
-          height: 18,
-          decoration: BoxDecoration(
-            border: Border.all(color: Colors.green),
-          ),
-          child: CustomPaint(
-            painter: _LinearProgressIndicatorPainter(value: 0.2),
-          ),
+          height: 1,
+          color: Colors.red,
+        ),
+        Stack(
+          children: <Widget>[
+            Container(
+              width: double.infinity,
+              height: 18,
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.green),
+              ),
+              child: CustomPaint(
+                painter: _LinearProgressIndicatorPainter(value: 0.2),
+              ),
+            ),
+            Container(
+              height: 18,
+              padding: EdgeInsets.only(left: 2),
+              child: Text(
+                "MP:2000/9999",
+                style: style,
+              ),
+              alignment: Alignment.centerLeft,
+            )
+          ],
         )
       ],
+    );
+  }
+
+  Widget _buildMenuArea() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Spacer(),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Spacer(),
+            _buildMenu("宠物"),
+            Spacer(),
+            _buildMenu("门派"),
+            Spacer(),
+            _buildMenu("技能"),
+            Spacer(),
+            _buildMenu("成就"),
+            Spacer(),
+          ],
+        ),
+        Spacer(),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Spacer(),
+            _buildMenu("任务"),
+            Spacer(),
+            _buildMenu("图鉴"),
+            Spacer(),
+            _buildMenu("攻略"),
+            Spacer(),
+            _buildMenu("神器"),
+            Spacer(),
+          ],
+        ),
+        Spacer(),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Spacer(),
+            _buildMenu("备用一"),
+            Spacer(),
+            _buildMenu("备用二"),
+            Spacer(),
+            _buildEmptyMenu(),
+            Spacer(),
+            _buildEmptyMenu(),
+            Spacer(),
+          ],
+        ),
+        Spacer(),
+      ],
+    );
+  }
+
+  Widget _buildMenu(String menuName) {
+    return Container(
+      width: 45,
+      height: 25,
+      child: RaisedButton(
+          color: Colors.green,
+          splashColor: Colors.green.shade800,
+          padding: EdgeInsets.all(0),
+          onPressed: () {},
+          child: Text(menuName)),
+    );
+  }
+
+  Widget _buildEmptyMenu() {
+    return Container(
+      width: 45,
+      height: 25,
+    );
+  }
+
+  Widget _buildTitle() {
+    return Container(
+      alignment: Alignment.center,
+      height: 40,
+      child: Text(
+        "秦始皇陵一层",
+        style: TextStyle(fontSize: 18),
+      ),
+    );
+  }
+
+  Widget _buildContentView() {
+    return Expanded(
+      child: Container(
+        color: Colors.yellow.shade200,
+        child: ListView.separated(
+            itemBuilder: (BuildContext context, int index) {
+              return Text("$index");
+            },
+            separatorBuilder: (BuildContext context, int index) {
+              return index % 2 == 0 ? divider1 : divider2;
+            },
+            itemCount: 10),
+      ),
     );
   }
 
@@ -148,14 +289,29 @@ class TestApp extends StatelessWidget {
                       color: Colors.red,
                     ),
                     Expanded(
-                      child: Container(
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.green),
-                        ),
-                        child: CustomPaint(
-                          painter: _LinearProgressIndicatorPainter(value: 0.5),
-                        ),
+                      child: Stack(
+                        children: <Widget>[
+                          Container(
+                            width: double.infinity,
+                            height: double.infinity,
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.green),
+                            ),
+                            child: CustomPaint(
+                              painter:
+                                  _LinearProgressIndicatorPainter(value: 0.5),
+                            ),
+                          ),
+                          Container(
+                            height: 18,
+                            padding: EdgeInsets.only(left: 2),
+                            child: Text(
+                              "EXP:10000000/20000000",
+                              style: style,
+                            ),
+                            alignment: Alignment.centerLeft,
+                          )
+                        ],
                       ),
                     )
                   ],
@@ -175,7 +331,7 @@ class TestApp extends StatelessWidget {
               child: Container(
                 width: double.infinity,
                 height: 84,
-                child: Text("ABC"),
+                child: _buildMenuArea(),
                 decoration: BoxDecoration(
                   color: Colors.yellow,
                   border: Border(
@@ -192,7 +348,16 @@ class TestApp extends StatelessWidget {
         Expanded(
           child: Container(
             width: double.infinity,
-            child: Text("ABC"),
+            child: Column(
+              children: <Widget>[
+                _buildTitle(),
+                Container(
+                  height: 1,
+                  color: Colors.red,
+                ),
+                _buildContentView(),
+              ],
+            ),
             decoration: BoxDecoration(
               color: Colors.yellow,
               border: Border(
