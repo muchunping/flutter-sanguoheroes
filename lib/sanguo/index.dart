@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import "package:xml/xml.dart" as xml;
 
 void main() => runApp(SanguoApp());
 
@@ -64,12 +65,11 @@ class _LinearProgressIndicatorPainter extends CustomPainter {
 
 class TestApp extends StatelessWidget {
   final style = TextStyle(color: Colors.black, fontSize: 12.0);
-  final Widget divider1 = Divider(
-    color: Colors.blue,
-  );
+  final Widget divider1 = Divider(color: Colors.blue);
   final Widget divider2 = Divider(color: Colors.green);
+  final WorldContext worldContext = WorldContext();
 
-  Widget _buildStatusBars() {
+  Widget _buildStatusBars(BuildContext context) {
     return Column(
       children: <Widget>[
         Expanded(
@@ -85,7 +85,30 @@ class TestApp extends StatelessWidget {
                     color: Colors.green,
                     splashColor: Colors.green.shade800,
                     padding: EdgeInsets.all(0),
-                    onPressed: () {},
+                    onPressed: () {
+                      DefaultAssetBundle.of(context)
+                          .loadString("xmls/npcs.xml")
+                          .then((loadString) {
+                        var parse = xml.parse(loadString);
+                        for (var v in parse.children) {
+                          if (v is xml.XmlElement &&
+                              v.name.local == "npc-list") {
+                            for (var t in v.children) {
+                              print("${t.text},$t");
+                            }
+                          }
+                        }
+//                        parse.attributes.forEach((v){
+//                          print("${v.name},${v.text}");
+//                        });
+                      });
+//                      DefaultAssetBundle.of(context).loadStructuredData("xmls/npcs.xml", (v){
+//                        var parse = xml.parse(v);
+//                        parse.attributes.forEach((v){
+//                          print("${v.name},${v.text}");
+//                        });
+//                      });
+                    },
                     child: Text("详情")),
               ),
             ],
@@ -252,6 +275,9 @@ class TestApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Future<Actor>(() {
+      return worldContext.loadResources(context);
+    }).then((v) {}).catchError((e) {});
     return Column(
       children: <Widget>[
         Row(
@@ -279,7 +305,7 @@ class TestApp extends StatelessWidget {
                           child: Container(
                             height: 64,
                             color: Colors.red,
-                            child: _buildStatusBars(),
+                            child: _buildStatusBars(context),
                           ),
                         ),
                       ],
@@ -386,4 +412,53 @@ class TestApp extends StatelessWidget {
       ],
     );
   }
+}
+
+class WorldContext {
+  Scene currentScene;
+
+  List<Scene> sceneList;
+
+  loadResources(BuildContext context) async {
+    DefaultAssetBundle.of(context).loadStructuredData("xmls/npcs.xml", (v) {
+      var parse = xml.parse(v);
+      parse.attributes.forEach((v) {
+        print("${v.name},${v.text}");
+      });
+    });
+  }
+}
+
+abstract class Scene {
+  int id;
+  String name;
+  int type;
+  List<int> npcIDs;
+
+  Scene(this.id, this.name, this.type, this.npcIDs);
+}
+
+class IsolatedRoom extends Scene {
+  IsolatedRoom(int id, String name, List<int> npcIDs)
+      : super(id, name, 1, npcIDs);
+}
+
+class City extends Scene {
+  List<int> gateIDs;
+
+  City(int id, String name, List<int> npcIDs, this.gateIDs)
+      : super(id, name, 0, npcIDs);
+}
+
+class Actor {
+  String name;
+  String level;
+  Range hp;
+  Range mp;
+  Range exp;
+}
+
+class Range {
+  int max;
+  int current;
 }
