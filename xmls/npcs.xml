@@ -2,5 +2,6 @@
 <npc-list>
     <npc id="0" name="武器店老板" action="交易"/>
     <npc id="1" name="防具店老板" action="交易"/>
-    <npc id="2" name="手势店老板" action="交易"/>
+    <npc id="2" name="首饰店老板" action="交易"/>
+    <npc id="3" name="神秘商人" action="交易"/>
 </npc-list>

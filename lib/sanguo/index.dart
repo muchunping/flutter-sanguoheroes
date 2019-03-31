@@ -1,33 +1,43 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:redux/redux.dart';
 import "package:xml/xml.dart" as xml;
 
-void main() => runApp(SanguoApp());
+void main() {
+  runApp(SanguoApp());
+  PaintingBinding.instance.imageCache.maximumSize = 100;
+}
 
 class SanguoApp extends StatelessWidget {
+  final store = Store<WorldContext>(appReducer);
+
   @override
   Widget build(BuildContext context) {
-    return new MaterialApp(
-      home: Scaffold(
-        body: SafeArea(child: TestApp()),
+    return StoreProvider(
+      store: store,
+      child: new MaterialApp(
+        home: Scaffold(
+          body: SafeArea(child: TestApp()),
+        ),
+        theme: new ThemeData(
+            highlightColor: Colors.transparent,
+            //将点击高亮色设为透明
+            splashColor: Colors.transparent,
+            //将喷溅颜色设为透明
+            bottomAppBarColor: new Color.fromRGBO(244, 245, 245, 1.0),
+            //设置底部导航的背景色
+            scaffoldBackgroundColor: new Color.fromRGBO(244, 245, 245, 1.0),
+            //设置页面背景颜色
+            primaryIconTheme: new IconThemeData(color: Colors.blue),
+            //主要icon样式，如头部返回icon按钮
+            indicatorColor: Colors.blue,
+            //设置tab指示器颜色
+            iconTheme: new IconThemeData(size: 18.0),
+            //设置icon样式
+            primaryTextTheme: new TextTheme(
+                //设置文本样式
+                title: new TextStyle(color: Colors.black, fontSize: 16.0))),
       ),
-      theme: new ThemeData(
-          highlightColor: Colors.transparent,
-          //将点击高亮色设为透明
-          splashColor: Colors.transparent,
-          //将喷溅颜色设为透明
-          bottomAppBarColor: new Color.fromRGBO(244, 245, 245, 1.0),
-          //设置底部导航的背景色
-          scaffoldBackgroundColor: new Color.fromRGBO(244, 245, 245, 1.0),
-          //设置页面背景颜色
-          primaryIconTheme: new IconThemeData(color: Colors.blue),
-          //主要icon样式，如头部返回icon按钮
-          indicatorColor: Colors.blue,
-          //设置tab指示器颜色
-          iconTheme: new IconThemeData(size: 18.0),
-          //设置icon样式
-          primaryTextTheme: new TextTheme(
-              //设置文本样式
-              title: new TextStyle(color: Colors.black, fontSize: 16.0))),
     );
   }
 }
@@ -70,104 +80,124 @@ class TestApp extends StatelessWidget {
   final WorldContext worldContext = WorldContext();
 
   Widget _buildStatusBars(BuildContext context) {
+
     return Column(
       children: <Widget>[
         Expanded(
-          child: Row(
-            children: <Widget>[
-              Padding(padding: EdgeInsets.only(left: 4)),
-              Text("江湖小虾米"),
-              Spacer(),
-              Container(
-                width: 45,
-                height: 25,
-                child: RaisedButton(
-                    color: Colors.green,
-                    splashColor: Colors.green.shade800,
-                    padding: EdgeInsets.all(0),
-                    onPressed: () {
-                      DefaultAssetBundle.of(context)
-                          .loadString("xmls/npcs.xml")
-                          .then((loadString) {
-                        var parse = xml.parse(loadString);
-                        for (var v in parse.children) {
-                          if (v is xml.XmlElement &&
-                              v.name.local == "npc-list") {
-                            for (var t in v.children) {
-                              print("${t.text},$t");
-                            }
-                          }
-                        }
-//                        parse.attributes.forEach((v){
-//                          print("${v.name},${v.text}");
-//                        });
-                      });
-//                      DefaultAssetBundle.of(context).loadStructuredData("xmls/npcs.xml", (v){
-//                        var parse = xml.parse(v);
-//                        parse.attributes.forEach((v){
-//                          print("${v.name},${v.text}");
-//                        });
+            child: Container(
+          height: 25,
+          alignment: Alignment.centerLeft,
+          padding: EdgeInsets.only(left: 4),
+          child: Text("江湖小虾米"),
+        )),
+
+//        Expanded(
+//          child: Row(
+//            children: <Widget>[
+//              Padding(padding: EdgeInsets.only(left: 4)),
+//              Text("江湖小虾米"),
+//              Spacer(),
+//              Container(
+//                width: 45,
+//                height: 25,
+//                child: RaisedButton(
+//                    color: Colors.green,
+//                    splashColor: Colors.green.shade800,
+//                    padding: EdgeInsets.all(0),
+//                    onPressed: () {
+//                      DefaultAssetBundle.of(context)
+//                          .loadString("xmls/npcs.xml")
+//                          .then((loadString) {
+//                        var parse = xml.parse(loadString);
+//                        for (var v in parse.children) {
+//                          if (v is xml.XmlElement &&
+//                              v.name.local == "npc-list") {
+//                            for (var t in v.children) {
+//                              print("${t.text},$t");
+//                            }
+//                          }
+//                        }
+////                        parse.attributes.forEach((v){
+////                          print("${v.name},${v.text}");
+////                        });
 //                      });
-                    },
-                    child: Text("详情")),
-              ),
-            ],
-          ),
-        ),
+////                      DefaultAssetBundle.of(context).loadStructuredData("xmls/npcs.xml", (v){
+////                        var parse = xml.parse(v);
+////                        parse.attributes.forEach((v){
+////                          print("${v.name},${v.text}");
+////                        });
+////                      });
+//                    },
+//                    child: Text("详情")),
+//              ),
+//            ],
+//          ),
+//        ),
         Container(
           height: 1,
           color: Colors.red,
         ),
-        Stack(
+        Row(
           children: <Widget>[
-            Container(
-              width: double.infinity,
-              height: 18,
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.green),
-              ),
-              child: CustomPaint(
-                painter: _LinearProgressIndicatorPainter(value: 0.9),
-              ),
-            ),
-            Container(
-              height: 18,
-              padding: EdgeInsets.only(left: 2),
-              child: Text(
-                "HP:9000/9999",
-                style: style,
-              ),
-              alignment: Alignment.centerLeft,
-            )
-          ],
-        ),
-        Container(
-          height: 1,
-          color: Colors.red,
-        ),
-        Stack(
-          children: <Widget>[
-            Container(
-              width: double.infinity,
-              height: 18,
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.green),
-              ),
-              child: CustomPaint(
-                painter: _LinearProgressIndicatorPainter(value: 0.2),
-              ),
-            ),
-            Container(
-              height: 18,
-              padding: EdgeInsets.only(left: 2),
-              child: Text(
-                "MP:2000/9999",
-                style: style,
-              ),
-              alignment: Alignment.centerLeft,
-            )
+            Spacer(),
+            _buildMenu("属性"),
+            Spacer(),
+            _buildMenu("技能"),
+            Spacer(),
+            _buildMenu("任务"),
+            Spacer(),
           ],
         )
+//        Stack(
+//          children: <Widget>[
+//            Container(
+//              width: double.infinity,
+//              height: 18,
+//              decoration: BoxDecoration(
+//                border: Border.all(color: Colors.green),
+//              ),
+//              child: CustomPaint(
+//                painter: _LinearProgressIndicatorPainter(value: 0.9),
+//              ),
+//            ),
+//            Container(
+//              height: 18,
+//              padding: EdgeInsets.only(left: 2),
+//              child: Text(
+//                "HP:9000/9999",
+//                style: style,
+//              ),
+//              alignment: Alignment.centerLeft,
+//            )
+//          ],
+//        ),
+//        Container(
+//          height: 1,
+//          color: Colors.red,
+//        ),
+//        Stack(
+//          children: <Widget>[
+//            Container(
+//              width: double.infinity,
+//              height: 18,
+//              decoration: BoxDecoration(
+//                border: Border.all(color: Colors.green),
+//              ),
+//              child: CustomPaint(
+//                painter: _LinearProgressIndicatorPainter(value: 0.2),
+//              ),
+//            ),
+//            Container(
+//              height: 18,
+//              padding: EdgeInsets.only(left: 2),
+//              child: Text(
+//                "MP:2000/9999",
+//                style: style,
+//              ),
+//              alignment: Alignment.centerLeft,
+//            )
+//          ],
+//        )
       ],
     );
   }
@@ -420,11 +450,30 @@ class WorldContext {
   List<Scene> sceneList;
 
   loadResources(BuildContext context) async {
-    DefaultAssetBundle.of(context).loadStructuredData("xmls/npcs.xml", (v) {
-      var parse = xml.parse(v);
-      parse.attributes.forEach((v) {
-        print("${v.name},${v.text}");
-      });
+    DefaultAssetBundle.of(context)
+        .loadString("xmls/npcs.xml")
+        .then((loadString) {
+      var parse = xml.parse(loadString);
+      for (var v in parse.children) {
+        if (v is xml.XmlElement && v.name.local == "npc-list") {
+          var npcList = List();
+          for (var t in v.children) {
+            if (t is xml.XmlElement) {
+              print("$t");
+              if (t.name.local == "npc") {
+                var npc = Map();
+                for (var n in t.attributes) {
+                  npc.putIfAbsent(n.name, () {
+                    return n.value;
+                  });
+                }
+                npcList.add(npc);
+              }
+            }
+          }
+          print(npcList);
+        }
+      }
     });
   }
 }
@@ -461,4 +510,8 @@ class Actor {
 class Range {
   int max;
   int current;
+}
+
+WorldContext appReducer(WorldContext state, action) {
+  return WorldContext();
 }
