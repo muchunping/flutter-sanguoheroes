@@ -42,6 +42,7 @@ flutter:
   assets:
     - images/ic_launcher.png
     - xmls/npcs.xml
+    - xmls/items.xml
     - images/pic1.png
     - images/pic2.png
     - images/pic3.png
