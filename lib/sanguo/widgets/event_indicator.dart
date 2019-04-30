@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 
+typedef void EventTriggerListener(ProgressEvent e);
+
 class EventProgressIndicator extends ProgressIndicator {
   final List<ProgressEvent> events;
+  final EventTriggerListener listener;
 
-  EventProgressIndicator(this.events, double value) : super(value: value);
+  EventProgressIndicator(double value, {this.events, this.listener}) : super(value: value);
 
   @override
   State<EventProgressIndicator> createState() {
@@ -33,10 +36,6 @@ class EventProgressState extends State<EventProgressIndicator> {
 
   @override
   Widget build(BuildContext context) {
-    return _buildIndicator();
-  }
-
-  Widget _buildIndicator() {
     return Column(
         mainAxisAlignment: MainAxisAlignment.end,
         crossAxisAlignment: CrossAxisAlignment.start,

@@ -37,6 +37,11 @@ class WelcomeState extends State<WelcomePage>
         upperBound: 100)
       ..addListener(() {
         setState(() => {});
+      })
+      ..addStatusListener((status) {
+        if (status == AnimationStatus.completed) {
+          Navigator.of(context).pushReplacementNamed("home");
+        }
       });
     _controller.forward();
   }
@@ -79,13 +84,19 @@ class WelcomeState extends State<WelcomePage>
                         )),
                     Padding(
                       padding: EdgeInsets.only(bottom: 30),
-                      child: EventProgressIndicator([
-                        ProgressEvent("下载插件资源", 10),
-                        ProgressEvent("解压资源", 50),
-                        ProgressEvent("安装中..", 50),
-                        ProgressEvent("校验资源", 30),
-                        ProgressEvent("运行插件", 20),
-                      ], _controller.value),
+                      child: EventProgressIndicator(
+                        _controller.value,
+                        listener: (e) {
+                          print(e.name);
+                        },
+                        events: [
+                          ProgressEvent("下载插件资源", 10),
+                          ProgressEvent("解压资源", 50),
+                          ProgressEvent("安装中..", 50),
+                          ProgressEvent("校验资源", 30),
+                          ProgressEvent("运行插件", 20),
+                        ],
+                      ),
                     ),
                   ],
                 ))),
@@ -97,6 +108,20 @@ class WelcomeState extends State<WelcomePage>
 class HomePage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return null;
+    return HomeState();
+  }
+}
+
+class HomeState extends State<HomePage> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Title"),
+      ),
+      body: Center(
+        child: Text("Home Page"),
+      ),
+    );
   }
 }
