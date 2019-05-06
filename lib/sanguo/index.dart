@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sanguo_heroes/sanguo/widgets/event_indicator.dart';
+import 'package:sanguo_heroes/sanguo/widgets/seek_bar.dart';
 import 'package:sanguo_heroes/sanguo/widgets/shimmer.dart';
 
 main() => runApp(MyApp());
@@ -120,7 +121,7 @@ class HomeState extends State<HomePage> {
         title: Text("Title"),
       ),
       body: Center(
-        child: Text("Home Page"),
+        child: SeekBar(),
       ),
     );
   }
