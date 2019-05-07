@@ -12,6 +12,10 @@ main() => runApp(MaterialApp(
     ));
 
 class SeekBar extends StatefulWidget {
+  final List<String> seeks;
+
+  const SeekBar({Key key, this.seeks}) : super(key: key);
+
   @override
   State<StatefulWidget> createState() {
     return SeekBarState();
@@ -19,7 +23,7 @@ class SeekBar extends StatefulWidget {
 }
 
 class SeekBarState extends State<SeekBar> {
-  var position;
+  var position = 0.0;
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +50,7 @@ class SeekBarState extends State<SeekBar> {
           minHeight: 30,
         ),
         child: CustomPaint(
-          painter: _SeekBarPainter(position),
+          painter: _SeekBarPainter(position, widget.seeks),
         ),
       ),
     );
@@ -55,9 +59,9 @@ class SeekBarState extends State<SeekBar> {
 
 class _SeekBarPainter extends CustomPainter {
   final double value;
-  final List<String> seeks = ["2007", "2008", "2009", "2010", "2011", "2012"];
+  final List<String> seeks;
 
-  _SeekBarPainter(this.value);
+  _SeekBarPainter(this.value, this.seeks);
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -73,7 +77,8 @@ class _SeekBarPainter extends CustomPainter {
     var translateX = 0.0;
     for (var seek in seeks) {
       var textPainter = TextPainter(
-          text: TextSpan(text: seek, style: TextStyle(color: Colors.black.withAlpha(100))),
+          text: TextSpan(
+              text: seek, style: TextStyle(color: Colors.black.withAlpha(100))),
           textDirection: TextDirection.ltr);
       textPainter.layout();
       var tw = textPainter.width;
@@ -89,16 +94,18 @@ class _SeekBarPainter extends CustomPainter {
       ..color = Colors.blueAccent;
     var rect = Offset.zero & Size(cw - 4, size.height - 4);
     var cell = ((value - cw / 2) / cw).round();
+    cell = cell < 0 ? 0 : cell;
     rect = rect.translate(cw * cell + 2, 2);
     canvas.drawRRect(RRect.fromRectAndRadius(rect, Radius.circular(15)), paint);
     var textPainter = TextPainter(
-        text: TextSpan(text: seeks[cell], style: TextStyle(color: Colors.white)),
+        text:
+            TextSpan(text: seeks[cell], style: TextStyle(color: Colors.white)),
         textDirection: TextDirection.ltr);
     textPainter.layout();
     var tw = textPainter.width;
     var th = textPainter.height;
-    var offset = Offset((cw - tw) / 2, (size.height - th) / 2)
-        .translate(cw * cell, 0.0);
+    var offset =
+        Offset((cw - tw) / 2, (size.height - th) / 2).translate(cw * cell, 0.0);
     textPainter.paint(canvas, offset);
   }
 

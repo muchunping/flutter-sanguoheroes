@@ -121,7 +121,9 @@ class HomeState extends State<HomePage> {
         title: Text("Title"),
       ),
       body: Center(
-        child: SeekBar(),
+        child: SeekBar(
+          seeks: ["2007", "2008", "2009", "2010", "2011", "2012"],
+        ),
       ),
     );
   }

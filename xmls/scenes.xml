@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<scene-list>
+    <scene id="01" name="长安" type="city" description="" />
+    <scene id="02" name="建业" type="city" description="" />
+    <scene id="03" name="洛阳" type="city" description="" />
+    <scene id="04" name="成都" type="city" description="" />
+    <scene id="05" name="武威" type="city" description="" />
+    <scene id="06" name="天水" type="city" description="" />
+</scene-list>
