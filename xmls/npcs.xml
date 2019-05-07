@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <npc-list>
-    <npc id="0" name="武器店老板" action="交易"/>
-    <npc id="1" name="防具店老板" action="交易"/>
-    <npc id="2" name="首饰店老板" action="交易"/>
-    <npc id="3" name="神秘商人" action="交易"/>
+    <npc id="0" name="武器店老板" action="交易" type = "0"/>
+    <npc id="1" name="防具店老板" action="交易" type = "0"/>
+    <npc id="2" name="首饰店老板" action="交易" type = "0"/>
+    <npc id="3" name="神秘商人" action="交易" type = "1"/>
+
+    <npc id="11" name="刘备" action="" type = "2"/>
 </npc-list>

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sanguo_heroes/sanguo/models/world_context.dart';
 import 'package:sanguo_heroes/sanguo/widgets/event_indicator.dart';
 import 'package:sanguo_heroes/sanguo/widgets/seek_bar.dart';
 import 'package:sanguo_heroes/sanguo/widgets/shimmer.dart';
@@ -26,29 +27,21 @@ class WelcomePage extends StatefulWidget {
 
 class WelcomeState extends State<WelcomePage>
     with SingleTickerProviderStateMixin {
-  AnimationController _controller;
+  double progress;
 
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(
-        vsync: this,
-        duration: Duration(seconds: 10),
-        lowerBound: 0,
-        upperBound: 100)
-      ..addListener(() {
-        setState(() => {});
-      })
-      ..addStatusListener((status) {
-        if (status == AnimationStatus.completed) {
-          Navigator.of(context).pushReplacementNamed("home");
-        }
-      });
-    _controller.forward();
+    WorldContext().loadResource(DefaultAssetBundle.of(context), (progress) {
+      this.progress = progress;
+      setState(() => {});
+      if (progress >= 100) {
+        Navigator.of(context).pushReplacementNamed("home");
+      }
+    });
   }
 
   dispose() {
-    _controller.dispose();
     super.dispose();
   }
 
@@ -86,7 +79,7 @@ class WelcomeState extends State<WelcomePage>
                     Padding(
                       padding: EdgeInsets.only(bottom: 30),
                       child: EventProgressIndicator(
-                        _controller.value,
+                        progress,
                         listener: (e) {
                           print(e.name);
                         },
@@ -117,14 +110,18 @@ class HomeState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Title"),
-      ),
-      body: Center(
-        child: SeekBar(
-          seeks: ["2007", "2008", "2009", "2010", "2011", "2012"],
+        body: Container(
+      color: Colors.lightBlue,
+      child: SafeArea(
+        child: Center(
+          child: Container(
+            color: Colors.white,
+            child: SeekBar(
+              seeks: ["2007", "2008", "2009", "2010", "2011", "2012"],
+            ),
+          ),
         ),
       ),
-    );
+    ));
   }
 }
