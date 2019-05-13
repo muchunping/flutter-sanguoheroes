@@ -4,6 +4,12 @@
         <gates-list>
             <gate id="02" visible="1"/>
             <gate id="03" visible="0"/>
+            <gate id="07" visible="0"/>
+        </gates-list>
+    </scene>
+    <scene id="07" name="先秦古墓" type="cave" description="" >
+        <gates-list>
+            <gate id="01" visible="1"/>
         </gates-list>
     </scene>
     <scene id="02" name="建业" type="city" description="" >
