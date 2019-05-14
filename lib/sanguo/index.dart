@@ -1,10 +1,19 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:sanguo_heroes/sanguo/models/world_context.dart';
 import 'package:sanguo_heroes/sanguo/widgets/event_indicator.dart';
-import 'package:sanguo_heroes/sanguo/widgets/seek_bar.dart';
 import 'package:sanguo_heroes/sanguo/widgets/shimmer.dart';
 
 main() => runApp(MyApp());
+
+const Size uxSize = Size(360, 640);
+final MediaQueryData mediaQuery = MediaQueryData.fromWindow(window);
+final scaleX =
+        (mediaQuery.size.width - mediaQuery.padding.horizontal) / uxSize.width,
+    scaleY =
+        (mediaQuery.size.height - mediaQuery.padding.vertical) / uxSize.height;
+WorldContext worldContext;
 
 class MyApp extends StatelessWidget {
   @override
@@ -27,18 +36,19 @@ class WelcomePage extends StatefulWidget {
 
 class WelcomeState extends State<WelcomePage>
     with SingleTickerProviderStateMixin {
-  double progress;
+  double progress = 0.0;
 
   @override
   void initState() {
     super.initState();
-    WorldContext().loadResource(DefaultAssetBundle.of(context), (progress) {
-      this.progress = progress;
-      setState(() => {});
-      if (progress >= 100) {
-        Navigator.of(context).pushReplacementNamed("home");
-      }
-    });
+    worldContext = WorldContext()
+      ..loadResource(DefaultAssetBundle.of(context), (progress) {
+        this.progress = progress;
+        setState(() => {});
+        if (progress >= 100) {
+          Navigator.of(context).pushReplacementNamed("home");
+        }
+      });
   }
 
   dispose() {
@@ -47,15 +57,14 @@ class WelcomeState extends State<WelcomePage>
 
   @override
   Widget build(BuildContext context) {
-    var windowSize = MediaQuery.of(context).size;
     return Scaffold(
       body: Container(
         color: Colors.lightBlue,
         child: SafeArea(
             child: Container(
                 color: Colors.lightBlueAccent,
-                width: windowSize.width,
-                height: windowSize.height,
+                width: 360 * scaleX,
+                height: 640 * scaleY,
                 child: Stack(
                   children: <Widget>[
                     Container(
@@ -107,18 +116,46 @@ class HomePage extends StatefulWidget {
 }
 
 class HomeState extends State<HomePage> {
+  final Widget divider1 = Divider(color: Colors.blue, height: 1);
+  final Widget divider2 = Divider(color: Colors.green, height: 1);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: Container(
       color: Colors.lightBlue,
       child: SafeArea(
-        child: Center(
-          child: Container(
-            color: Colors.white,
-            child: SeekBar(
-              seeks: ["2007", "2008", "2009", "2010", "2011", "2012"],
-            ),
+        child: Container(
+          color: Colors.white,
+          child: Column(
+            children: <Widget>[
+              Container(
+                width: 360 * scaleX,
+                height: 100 * scaleY,
+                child: Text("header"),
+                decoration:
+                    BoxDecoration(border: Border.all(color: Colors.blueGrey)),
+              ),
+              Container(
+                width: 360 * scaleX,
+                height: 540 * scaleY,
+                color: Colors.yellow.shade50,
+                child: ListView.separated(
+                    itemBuilder: (context, index) {
+                      var item = worldContext.sceneList[index];
+                      return ListTile(
+                        leading: Icon(Icons.access_alarm),
+                        title: Text(item.name),
+                        subtitle: Text(item.description),
+                        trailing: Icon(Icons.arrow_forward_ios),
+                      );
+                    },
+                    separatorBuilder: (context, index) {
+                      return index % 2 == 0 ? divider1 : divider2;
+                    },
+                    itemCount: worldContext.sceneList.length),
+              )
+            ],
           ),
         ),
       ),

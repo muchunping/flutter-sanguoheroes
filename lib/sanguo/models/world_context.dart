@@ -5,9 +5,9 @@ import 'package:sanguo_heroes/sanguo/models/scene.dart';
 import "package:xml/xml.dart" as xml;
 
 class WorldContext {
-  var sceneList;
-  var npcList;
-  var itemList;
+  List<Scene> sceneList;
+  List<Npc> npcList;
+  List<Item> itemList;
 
   void loadResource(AssetBundle assetBundle, void f(progress)) async {
     var progress = 0.0;
@@ -49,19 +49,15 @@ class WorldContext {
   Future<List<E>> parseXml<E>(String data, E f(xml.XmlElement element)) {
     var list = <E>[];
     var document = xml.parse(data);
-    document.children.where((node) {
-      return node is xml.XmlElement;
-    }).map<xml.XmlElement>((node) {
-      return node as xml.XmlElement;
-    }).forEach((element) {
+    document.children
+        .where((node) => node is xml.XmlElement)
+        .map<xml.XmlElement>((node) => node as xml.XmlElement)
+        .forEach((element) {
       print(element.name.local);
-      element.children.where((node) {
-        return node is xml.XmlElement;
-      }).map<xml.XmlElement>((node) {
-        return node as xml.XmlElement;
-      }).forEach((element) {
-        list.add(f(element));
-      });
+      element.children
+          .where((node) => node is xml.XmlElement)
+          .map<xml.XmlElement>((node) => node as xml.XmlElement)
+          .forEach((element) => list.add(f(element)));
     });
     return Future.value(list);
   }
