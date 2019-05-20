@@ -1,4 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <skill-list>
-
+    <skill name="腐尸毒" description="使目标中毒，每回合损失固定生命值" id="001" levelMax="3">
+        <effect duration="3" level="1" trigger="auto" value="50">
+            <scope number="1" tpye="special" />
+        </effect>
+        <effect duration="3" level="2" trigger="auto" value="60">
+            <scope number="2" tpye="special-random" />
+        </effect>
+        <effect duration="3" level="3" trigger="auto" value="70">
+            <scope number="3" tpye="special-random" />
+        </effect>
+    </skill>
 </skill-list>

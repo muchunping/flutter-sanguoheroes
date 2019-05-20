@@ -6,6 +6,9 @@
             <gate id="03" visible="0"/>
             <gate id="07" visible="0"/>
         </gates-list>
+        <npc-list>
+            <npc id=""/>
+        </npc-list>
     </scene>
     <scene id="07" name="先秦古墓" type="cave" description="" >
         <gates-list>

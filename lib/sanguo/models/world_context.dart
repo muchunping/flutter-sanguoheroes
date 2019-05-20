@@ -1,6 +1,8 @@
 import 'package:flutter/services.dart';
+import 'package:sanguo_heroes/sanguo/models/equipment.dart';
 import 'package:sanguo_heroes/sanguo/models/item.dart';
 import 'package:sanguo_heroes/sanguo/models/npc.dart';
+import 'package:sanguo_heroes/sanguo/models/player.dart' as p;
 import 'package:sanguo_heroes/sanguo/models/scene.dart';
 import "package:xml/xml.dart" as xml;
 
@@ -8,6 +10,10 @@ class WorldContext {
   List<Scene> sceneList;
   List<Npc> npcList;
   List<Item> itemList;
+  Map<String, Equipment> equipmentMap;
+
+  Scene currentScene;
+  p.Player player;
 
   void loadResource(AssetBundle assetBundle, void f(progress)) async {
     var progress = 0.0;

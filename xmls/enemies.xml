@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <enemy-list>
-    <enemy id="0001" name="僵尸" level="5" aggressive="0">
+    <enemy id="0001" name="僵尸" level="5" aggressive="1">
         <fight pa="5" ma="0" pd="1" md="0" hp="20" mp="0" hr="80" dr="0" exp="5"/>
         <skill-list>
-
+            <skill id="001" level="3" priority="1" rate="50"/>
         </skill-list>
         <loot-list>
             <loot id="1001" mix="10" max="100" rate="100"/>
