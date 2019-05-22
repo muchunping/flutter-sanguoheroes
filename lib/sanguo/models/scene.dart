@@ -6,13 +6,15 @@ class Scene {
   final String type;
   final String description;
   final List<Gate> gates;
+  final List<String> npcIds;
 
-  Scene(this.id, this.name, this.type, this.description, this.gates);
+  Scene(
+      this.id, this.name, this.type, this.description, this.gates, this.npcIds);
 
   Scene.fromXml(xml.XmlElement element)
       : id = element.attributes.firstWhere((attribute) {
-    return attribute.name.local == "id";
-  }).value,
+          return attribute.name.local == "id";
+        }).value,
         name = element.attributes.firstWhere((attribute) {
           return attribute.name.local == "name";
         }).value,
@@ -24,31 +26,53 @@ class Scene {
         }).value,
         gates = element.children
             .where((node) {
-          return node is xml.XmlElement;
-        })
+              return node is xml.XmlElement;
+            })
             .map<xml.XmlElement>((node) {
-          return node as xml.XmlElement;
-        })
+              return node as xml.XmlElement;
+            })
             .firstWhere((element) {
-          return element.name.local == "gates-list";
-        })
+              return element.name.local == "gates-list";
+            })
             .children
             .where((node) {
-          return node is xml.XmlElement;
-        })
+              return node is xml.XmlElement;
+            })
             .map<xml.XmlElement>((node) {
-          return node as xml.XmlElement;
-        })
+              return node as xml.XmlElement;
+            })
             .map((element) {
-          return Gate.fromXml(element);
-        })
+              return Gate.fromXml(element);
+            })
+            .toList(),
+        npcIds = element.children
+            .where((node) {
+              return node is xml.XmlElement;
+            })
+            .map<xml.XmlElement>((node) {
+              return node as xml.XmlElement;
+            })
+            .firstWhere((element) {
+              return element.name.local == "npc-list";
+            })
+            .children
+            .where((node) {
+              return node is xml.XmlElement;
+            })
+            .map<xml.XmlElement>((node) {
+              return node as xml.XmlElement;
+            })
+            .map((element) {
+              return element.attributes.firstWhere((attribute) {
+                return attribute.name.local == "id";
+              }).value;
+            })
             .toList();
 
   @override
   String toString() {
-    return 'Scene{id: $id, name: $name, type: $type, description: $description, gates: $gates}';
+    return 'Scene{id: $id, name: $name, type: $type, description: $description, gates: $gates, npcIds: $npcIds}';
   }
-
 }
 
 class Gate {
@@ -59,16 +83,15 @@ class Gate {
 
   Gate.fromXml(xml.XmlElement element)
       : id = element.attributes.firstWhere((attribute) {
-    return attribute.name.local == "id";
-  }).value,
+          return attribute.name.local == "id";
+        }).value,
         visible = element.attributes.firstWhere((attribute) {
-          return attribute.name.local == "visible";
-        }).value ==
+              return attribute.name.local == "visible";
+            }).value ==
             "1";
 
   @override
   String toString() {
     return 'Gate{id: $id, visible: $visible}';
   }
-
 }

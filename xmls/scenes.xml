@@ -7,42 +7,67 @@
             <gate id="07" visible="0"/>
         </gates-list>
         <npc-list>
-            <npc id=""/>
+            <npc id="01"/>
+            <npc id="02"/>
         </npc-list>
     </scene>
     <scene id="07" name="先秦古墓" type="cave" description="" >
         <gates-list>
             <gate id="01" visible="1"/>
         </gates-list>
+        <npc-list>
+            <npc id="01"/>
+            <npc id="02"/>
+        </npc-list>
     </scene>
     <scene id="02" name="建业" type="city" description="" >
         <gates-list>
             <gate id="03" visible="1"/>
             <gate id="04" visible="0"/>
         </gates-list>
+        <npc-list>
+            <npc id="01"/>
+            <npc id="02"/>
+        </npc-list>
     </scene>
     <scene id="03" name="洛阳" type="city" description="" >
         <gates-list>
             <gate id="04" visible="1"/>
             <gate id="05" visible="0"/>
         </gates-list>
+        <npc-list>
+            <npc id="01"/>
+            <npc id="02"/>
+        </npc-list>
     </scene>
     <scene id="04" name="成都" type="city" description="" >
         <gates-list>
             <gate id="05" visible="1"/>
             <gate id="06" visible="0"/>
         </gates-list>
+        <npc-list>
+            <npc id="01"/>
+            <npc id="02"/>
+        </npc-list>
     </scene>
     <scene id="05" name="武威" type="city" description="" >
         <gates-list>
             <gate id="06" visible="1"/>
             <gate id="01" visible="0"/>
         </gates-list>
+        <npc-list>
+            <npc id="01"/>
+            <npc id="02"/>
+        </npc-list>
     </scene>
     <scene id="06" name="天水" type="city" description="" >
         <gates-list>
             <gate id="01" visible="1"/>
             <gate id="02" visible="0"/>
         </gates-list>
+        <npc-list>
+            <npc id="01"/>
+            <npc id="02"/>
+        </npc-list>
     </scene>
 </scene-list>

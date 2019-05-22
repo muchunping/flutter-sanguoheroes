@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <npc-list>
-    <npc id="0" name="武器店老板" action="交易" type = "0"/>
-    <npc id="0" name="铁匠" action="打造" type = "0"/>
-    <npc id="1" name="防具店老板" action="交易" type = "0"/>
-    <npc id="1" name="裁缝" action="打造" type = "0"/>
-    <npc id="2" name="首饰店老板" action="交易" type = "0"/>
-    <npc id="2" name="巧匠" action="打造" type = "0"/>
-    <npc id="3" name="神秘商人" action="交易" type = "1"/>
+    <npc id="01" name="武器店老板" action="交易" type = "0"/>
+    <npc id="02" name="铁匠" action="打造" type = "0"/>
+    <npc id="03" name="防具店老板" action="交易" type = "0"/>
+    <npc id="04" name="裁缝" action="打造" type = "0"/>
+    <npc id="05" name="首饰店老板" action="交易" type = "0"/>
+    <npc id="06" name="巧匠" action="打造" type = "0"/>
+    <npc id="07" name="神秘商人" action="交易" type = "1"/>
 
     <npc id="101" name="刘备" action="" type = "2" level="90"/>
     <npc id="102" name="诸葛亮" action="" type = "2" level="100"/>
