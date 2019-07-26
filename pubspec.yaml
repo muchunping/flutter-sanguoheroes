@@ -44,6 +44,8 @@ flutter:
     - xmls/npcs.xml
     - xmls/items.xml
     - xmls/scenes.xml
+    - xmls/enemies.xml
+    - xmls/skills.xml
     - images/pic1.png
     - images/pic2.png
     - images/pic3.png

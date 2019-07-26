@@ -7,9 +7,10 @@ import 'package:sanguo_heroes/sanguo/models/scene.dart';
 import "package:xml/xml.dart" as xml;
 
 class WorldContext {
-  List<Scene> sceneList;
-  List<Npc> npcList;
+  Map<String, Scene> sceneMap;
+  Map<String, Npc> npcMap;
   List<Item> itemList;
+  Map<String, Item> itemMap;
   Map<String, Equipment> equipmentMap;
 
   Scene currentScene;
@@ -17,35 +18,42 @@ class WorldContext {
 
   void loadResource(AssetBundle assetBundle, void f(progress)) async {
     var progress = 0.0;
-    sceneList = await assetBundle
+    var sceneList = await assetBundle
         .loadStructuredData<List<Scene>>("xmls/scenes.xml", (data) {
       return parseXml<Scene>(data, (element) {
         return Scene.fromXml(element);
       });
     });
+    sceneMap = Map<String, Scene>.fromIterable(sceneList,
+        key: (item) => (item as Scene).id, value: (item) => item);
     f(progress += 10);
     for (var i = 0; i < 20; i++) {
       await new Future.delayed(const Duration(milliseconds: 50));
       f(progress += 1);
     }
-    npcList = await assetBundle.loadStructuredData<List<Npc>>("xmls/npcs.xml",
-        (data) {
+    var npcList = await assetBundle
+        .loadStructuredData<List<Npc>>("xmls/npcs.xml", (data) {
       return parseXml<Npc>(data, (element) {
         return Npc.fromXml(element);
       });
     });
+    npcMap = Map<String, Npc>.fromIterable(npcList,
+        key: (item) => (item as Npc).id, value: (item) => item);
     f(progress += 10);
     for (var i = 0; i < 20; i++) {
       await new Future.delayed(const Duration(milliseconds: 50));
       f(progress += 1);
     }
-    itemList = await assetBundle
+    var itemList = await assetBundle
         .loadStructuredData<List<Item>>("xmls/items.xml", (data) {
       return parseXml<Item>(data, (element) {
         return Item.fromXml(element);
       });
     });
+    itemMap = Map<String, Item>.fromIterable(itemList,
+        key: (item) => (item as Item).id, value: (item) => item);
     f(progress += 20);
+    initConfig();
     for (var i = 0; i < 20; i++) {
       await new Future.delayed(const Duration(milliseconds: 100));
       f(progress += 1);
@@ -66,5 +74,10 @@ class WorldContext {
           .forEach((element) => list.add(f(element)));
     });
     return Future.value(list);
+  }
+
+  void initConfig() {
+    player = new p.Player();
+    currentScene = sceneMap["01"];
   }
 }

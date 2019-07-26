@@ -1,18 +1,20 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:sanguo_heroes/sanguo/models/item.dart';
+import 'package:sanguo_heroes/sanguo/models/scene.dart';
 import 'package:sanguo_heroes/sanguo/models/world_context.dart';
 import 'package:sanguo_heroes/sanguo/widgets/event_indicator.dart';
+import 'package:sanguo_heroes/sanguo/widgets/location_indicator.dart';
 import 'package:sanguo_heroes/sanguo/widgets/shimmer.dart';
+import 'package:sanguo_heroes/sanguo/pages/home.dart' as hp;
 
 main() => runApp(MyApp());
 
 const Size uxSize = Size(360, 640);
 final MediaQueryData mediaQuery = MediaQueryData.fromWindow(window);
 final scaleX =
-        (mediaQuery.size.width - mediaQuery.padding.horizontal) / uxSize.width,
-    scaleY =
-        (mediaQuery.size.height - mediaQuery.padding.vertical) / uxSize.height;
+    (mediaQuery.size.width - mediaQuery.padding.horizontal) / uxSize.width;
 WorldContext worldContext;
 
 class MyApp extends StatelessWidget {
@@ -21,7 +23,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       home: WelcomePage(),
       routes: {
-        "home": (c) => HomePage(),
+        "home": (c) => hp.HomePage(),
       },
     );
   }
@@ -64,7 +66,7 @@ class WelcomeState extends State<WelcomePage>
             child: Container(
                 color: Colors.lightBlueAccent,
                 width: 360 * scaleX,
-                height: 640 * scaleY,
+                height: double.infinity,
                 child: Stack(
                   children: <Widget>[
                     Container(
@@ -119,46 +121,182 @@ class HomeState extends State<HomePage> {
   final Widget divider1 = Divider(color: Colors.blue, height: 1);
   final Widget divider2 = Divider(color: Colors.green, height: 1);
 
+  void showSceneExitDialog() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return SimpleDialog(
+              title: Text("选择"),
+              children: worldContext.currentScene.gates
+                  .map<SimpleDialogOption>((Gate gate) {
+                var scene = worldContext.sceneMap[gate.id];
+                return SimpleDialogOption(
+                  child: Text("${scene.name}"),
+                  onPressed: () {
+                    worldContext.currentScene = scene;
+                    Navigator.pop(context);
+                    setState(() {});
+                  },
+                );
+              }).toList());
+        });
+  }
+
+  void showDetailPage(Item item) {
+    Navigator.pushNamed(context, "", arguments: item);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Container(
-      color: Colors.lightBlue,
-      child: SafeArea(
-        child: Container(
-          color: Colors.white,
-          child: Column(
-            children: <Widget>[
-              Container(
-                width: 360 * scaleX,
-                height: 100 * scaleY,
-                child: Text("header"),
-                decoration:
-                    BoxDecoration(border: Border.all(color: Colors.blueGrey)),
-              ),
-              Container(
-                width: 360 * scaleX,
-                height: 540 * scaleY,
-                color: Colors.yellow.shade50,
-                child: ListView.separated(
-                    itemBuilder: (context, index) {
-                      var item = worldContext.sceneList[index];
-                      return ListTile(
-                        leading: Icon(Icons.access_alarm),
-                        title: Text(item.name),
-                        subtitle: Text(item.description),
-                        trailing: Icon(Icons.arrow_forward_ios),
-                      );
-                    },
-                    separatorBuilder: (context, index) {
-                      return index % 2 == 0 ? divider1 : divider2;
-                    },
-                    itemCount: worldContext.sceneList.length),
-              )
-            ],
+      body: Container(
+        color: Colors.lightBlue,
+        child: SafeArea(
+          child: Container(
+            color: Colors.white,
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              children: <Widget>[
+                Container(
+                  width: 360 * scaleX,
+                  height: 92 * scaleX,
+                  child: Row(
+                    children: <Widget>[
+                      Container(
+                        color: Colors.cyan,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Container(
+                                  width: 62 * scaleX,
+                                  height: 62 * scaleX,
+                                  color: Colors.blue,
+                                  margin: EdgeInsets.all(1 * scaleX),
+                                  child: Image.asset("images/ic_launcher.png"),
+                                ),
+                                Container(
+                                  width: 160 * scaleX,
+                                  height: 64 * scaleX,
+                                  color: Colors.cyan,
+                                  child: Padding(
+                                    padding: EdgeInsets.only(
+                                        left: 4 * scaleX, right: 4 * scaleX),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Text(
+                                          "${worldContext.player.name}",
+                                          style: TextStyle(fontSize: 18),
+                                        ),
+                                        Text(
+                                          "${worldContext.player.name}",
+                                          style: TextStyle(fontSize: 14),
+                                        ),
+                                        Text(
+                                          "${worldContext.player.name}",
+                                          style: TextStyle(fontSize: 14),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                new InkWell(
+                                  // When the user taps the button, show a snackbar
+                                  onTap: () {
+                                    Scaffold.of(context).showSnackBar(new SnackBar(
+                                      content: new Text('Tap'),
+                                    ));
+                                  },
+                                  child: new Container(
+                                    padding: new EdgeInsets.all(12.0),
+                                    child: new Text('Flat Button'),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Spacer(),
+                            Row(
+                              children: <Widget>[
+                                Icon(Icons.ac_unit, size: 20 * scaleX),
+                                Icon(Icons.adjust, size: 20 * scaleX),
+                                Icon(Icons.alternate_email, size: 20 * scaleX),
+                                Icon(Icons.album, size: 20 * scaleX),
+                                Icon(Icons.audiotrack, size: 20 * scaleX),
+                                Icon(Icons.blur_circular, size: 20 * scaleX)
+                              ],
+                            ),
+                            Spacer(),
+                          ],
+                        ),
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: <Widget>[
+                          Container(
+                            child: Center(
+                              child: Text("${worldContext.currentScene.name}"),
+                            ),
+                            width: 94 * scaleX,
+                            height: 24 * scaleX,
+                            padding: EdgeInsets.all(4 * scaleX),
+                            color: Colors.cyanAccent,
+                          ),
+                          LocationIndicator(0, 20 * scaleX, 30 * scaleX,
+                              94 * scaleX, 42 * scaleX),
+                          Container(
+                            width: 94 * scaleX,
+                            height: 24 * scaleX,
+                            color: Colors.cyanAccent,
+                            child: FlatButton(
+                              onPressed: showSceneExitDialog,
+                              child: Text("离开"),
+                            ),
+                          )
+                        ],
+                      )
+                    ],
+                  ),
+                  decoration:
+                      BoxDecoration(border: Border.all(color: Colors.blueGrey)),
+                ),
+                Expanded(
+                  child: Container(
+                    width: 360 * scaleX,
+                    child: ListView.separated(
+                      itemBuilder: (context, index) {
+                        var item = worldContext
+                            .npcMap[worldContext.currentScene.npcIds[index]];
+                        return ListTile(
+                          leading: Icon(Icons.account_balance, size: 36),
+                          title: Text(item.name),
+                          subtitle: Text(item.action),
+                          trailing: Icon(Icons.child_care),
+                        );
+                      },
+                      separatorBuilder: (context, index) {
+                        return index % 2 == 0 ? divider1 : divider2;
+                      },
+                      itemCount: worldContext.currentScene.npcIds.length,
+                    ),
+                    decoration: BoxDecoration(
+                      border: Border(
+                        top: BorderSide(color: Colors.blueGrey.shade200),
+                        right: BorderSide(color: Colors.blueGrey),
+                        left: BorderSide(color: Colors.blueGrey),
+                        bottom: BorderSide(color: Colors.blueGrey),
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),
-    ));
+    );
   }
 }

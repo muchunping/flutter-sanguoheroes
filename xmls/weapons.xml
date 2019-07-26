@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<weapon-list>
+    <item id="2000" name="铁剑" pic="pic1.png" description="当归是人们最常用的补血中药之一">
+        <properties>
+            <AP>20</AP>
+            <AP>20</AP>
+        </properties>
+    </item>
+</weapon-list>

@@ -15,7 +15,7 @@ class Player {
   Wear wear;
 
   Player() {
-    name = "无名";
+    name = "来自星星的妮";
     sex = true;
 //    profession = Profession.warrior;
     level = 1;

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <scene-list>
-    <scene id="01" name="长安" type="city" description="" >
+    <scene id="01" name="长安" type="city" description="东方世界的中心" >
         <gates-list>
             <gate id="02" visible="1"/>
             <gate id="03" visible="0"/>
@@ -9,9 +9,27 @@
         <npc-list>
             <npc id="01"/>
             <npc id="02"/>
+            <npc id="03"/>
+            <npc id="04"/>
+            <npc id="05"/>
+            <npc id="06"/>
+            <npc id="07"/>
+            <npc id="08"/>
+            <npc id="09"/>
+            <npc id="10"/>
+            <npc id="11"/>
+            <npc id="12"/>
+            <npc id="13"/>
+            <npc id="102"/>
+            <npc id="103"/>
+            <npc id="104"/>
+            <npc id="105"/>
+            <npc id="106"/>
+            <npc id="107"/>
+            <npc id="108"/>
         </npc-list>
     </scene>
-    <scene id="07" name="先秦古墓" type="cave" description="" >
+    <scene id="07" name="先秦古墓" type="cave" description="先秦时代就存在的神秘大墓" >
         <gates-list>
             <gate id="01" visible="1"/>
         </gates-list>
@@ -20,7 +38,7 @@
             <npc id="02"/>
         </npc-list>
     </scene>
-    <scene id="02" name="建业" type="city" description="" >
+    <scene id="02" name="建业" type="city" description="建立帝王大业的地方" >
         <gates-list>
             <gate id="03" visible="1"/>
             <gate id="04" visible="0"/>
@@ -30,7 +48,7 @@
             <npc id="02"/>
         </npc-list>
     </scene>
-    <scene id="03" name="洛阳" type="city" description="" >
+    <scene id="03" name="洛阳" type="city" description="与长安并称的华夏古都" >
         <gates-list>
             <gate id="04" visible="1"/>
             <gate id="05" visible="0"/>
@@ -40,7 +58,7 @@
             <npc id="02"/>
         </npc-list>
     </scene>
-    <scene id="04" name="成都" type="city" description="" >
+    <scene id="04" name="成都" type="city" description="天府之国的中枢" >
         <gates-list>
             <gate id="05" visible="1"/>
             <gate id="06" visible="0"/>
@@ -50,7 +68,7 @@
             <npc id="02"/>
         </npc-list>
     </scene>
-    <scene id="05" name="武威" type="city" description="" >
+    <scene id="05" name="武威" type="city" description="通一线于广漠，控五郡之咽喉" >
         <gates-list>
             <gate id="06" visible="1"/>
             <gate id="01" visible="0"/>
@@ -60,7 +78,7 @@
             <npc id="02"/>
         </npc-list>
     </scene>
-    <scene id="06" name="天水" type="city" description="" >
+    <scene id="06" name="天水" type="city" description="羲皇故里" >
         <gates-list>
             <gate id="01" visible="1"/>
             <gate id="02" visible="0"/>
