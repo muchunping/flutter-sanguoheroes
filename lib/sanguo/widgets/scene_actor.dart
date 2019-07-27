@@ -44,8 +44,10 @@ class SceneShower extends StatelessWidget {
       var hasCover = true;
       while (hasCover) {
         hasCover = false;
-        dx = random.nextInt((size.width - 20 * scaleX - radius * 2).toInt()) + 10 * scaleX;
-        dy = random.nextInt((size.height - 20 * scaleX- radius * 2).toInt()) + 10 * scaleX;
+        dx = random.nextInt((size.width - 20 * scaleX - radius * 2).toInt()) +
+            10 * scaleX + radius;
+        dy = random.nextInt((size.height - 20 * scaleX - radius * 2).toInt()) +
+            10 * scaleX + radius;
         for (var rect in rectAll) {
           if (Math.sqrt(Math.pow(rect.center.dx - dx, 2) +
                   Math.pow(rect.center.dy - dy, 2)) <
@@ -60,6 +62,40 @@ class SceneShower extends StatelessWidget {
       rectAll.add(rect);
       return rect;
     }
+  }
+
+  void handAction(BuildContext context, String action, Npc npc) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return SimpleDialog(title: Text("选择"), children: [
+            SingleChildScrollView(
+              child: Container(
+                width: 280 * scaleX,
+                height: 160 * scaleX,
+                color: Colors.yellowAccent,
+                child: LayoutBuilder(builder: (c, b) {
+                  print(b.biggest.width);
+                  print(b.biggest.width / scaleX);
+                  return Row(
+                    children: <Widget>[
+                      Container(
+                        width: 100* scaleX,
+                        height: 200 * scaleX,
+                        color: Colors.green,
+                      ),
+                      Container(
+                        width: 190* scaleX,
+                        height: 200 * scaleX,
+                        color: Colors.blueAccent,
+                      )
+                    ],
+                  );
+                }),
+              ),
+            )
+          ]);
+        });
   }
 
   @override
@@ -77,7 +113,23 @@ class SceneShower extends StatelessWidget {
           return Positioned(
             child: InkWell(
               onTap: () {
-                print(npc.action);
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return SimpleDialog(
+                          title: Text("选择"),
+                          children: npc.action
+                              .split("|")
+                              .map<SimpleDialogOption>((String action) {
+                            return SimpleDialogOption(
+                              child: Text(action),
+                              onPressed: () {
+                                Navigator.pop(context);
+                                handAction(context, action, npc);
+                              },
+                            );
+                          }).toList());
+                    });
               },
               child: Container(
                 width: rect.width,
@@ -101,7 +153,7 @@ class SceneShower extends StatelessWidget {
                 height: rect.height,
                 decoration: BoxDecoration(
                     border: Border.all(color: Colors.blueAccent),
-                    borderRadius: BorderRadius.circular(10 * scaleX)),
+                    borderRadius: BorderRadius.circular(rect.width / 2)),
                 child: Center(child: Text(npc.name, style: shopStyle)),
               ),
             ),
@@ -109,8 +161,7 @@ class SceneShower extends StatelessWidget {
             top: rect.top,
           );
         });
-        var list = listOne.toList();
-        list.addAll(listTwo);
+        var list = listOne.toList() + listTwo.toList();
         return Stack(
           children: list,
         );

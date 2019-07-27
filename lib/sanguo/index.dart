@@ -178,7 +178,7 @@ class HomeState extends State<HomePage> {
                                   child: Image.asset("images/ic_launcher.png"),
                                 ),
                                 Container(
-                                  width: 160 * scaleX,
+                                  width: 200 * scaleX,
                                   height: 64 * scaleX,
                                   color: Colors.cyan,
                                   child: Padding(
@@ -202,18 +202,6 @@ class HomeState extends State<HomePage> {
                                         )
                                       ],
                                     ),
-                                  ),
-                                ),
-                                new InkWell(
-                                  // When the user taps the button, show a snackbar
-                                  onTap: () {
-                                    Scaffold.of(context).showSnackBar(new SnackBar(
-                                      content: new Text('Tap'),
-                                    ));
-                                  },
-                                  child: new Container(
-                                    padding: new EdgeInsets.all(12.0),
-                                    child: new Text('Flat Button'),
                                   ),
                                 ),
                               ],
