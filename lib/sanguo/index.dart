@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:sanguo_heroes/sanguo/models/item.dart';
 import 'package:sanguo_heroes/sanguo/models/scene.dart';
 import 'package:sanguo_heroes/sanguo/models/world_context.dart';
+import 'package:sanguo_heroes/sanguo/pages/npc_detail.dart';
 import 'package:sanguo_heroes/sanguo/widgets/event_indicator.dart';
 import 'package:sanguo_heroes/sanguo/widgets/location_indicator.dart';
 import 'package:sanguo_heroes/sanguo/widgets/shimmer.dart';
 import 'package:sanguo_heroes/sanguo/pages/home.dart' as hp;
+import 'package:sanguo_heroes/test.dart';
 
 main() => runApp(MyApp());
 
@@ -24,6 +26,8 @@ class MyApp extends StatelessWidget {
       home: WelcomePage(),
       routes: {
         "home": (c) => hp.HomePage(),
+//        "detail": (c) => NpcDetail(),
+        "detail": (c) => NewPage(),
       },
     );
   }
@@ -261,7 +265,7 @@ class HomeState extends State<HomePage> {
                         return ListTile(
                           leading: Icon(Icons.account_balance, size: 36),
                           title: Text(item.name),
-                          subtitle: Text(item.action),
+                          subtitle: Text(item.actions.toString()),
                           trailing: Icon(Icons.child_care),
                         );
                       },

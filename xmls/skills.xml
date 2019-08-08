@@ -1,14 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <skill-list>
-    <skill name="腐尸毒" description="使目标中毒，每回合损失固定生命值" id="001" levelMax="3">
-        <effect duration="3" level="1" trigger="auto" value="50">
-            <scope number="1" tpye="special" />
+    <skill name="过关斩将" description="对单个敌军造成严重物理伤害，击杀目标后再次施放" id="001" star="4" power="510" scope="1" appertain="107">
+        <cost mana="200" work="300"/>
+        <effect type="kill-enemy" probability="100" action="fire-skill" value="001"/>
+    </skill>
+
+    <skill name="丈八蛇矛" description="对单个敌军造成物理伤害，概率直接击杀目标，对boss无效" id="002" star="4" power="255" scope="1" appertain="108">
+        <cost mana="200" work="300"/>
+        <effect type="hit-enemy" probability="10" action="behead" value="">
+            <exclude>boss</exclude>
+            <exclude>player</exclude>
         </effect>
-        <effect duration="3" level="2" trigger="auto" value="60">
-            <scope number="2" tpye="special-random" />
-        </effect>
-        <effect duration="3" level="3" trigger="auto" value="70">
-            <scope number="3" tpye="special-random" />
-        </effect>
+    </skill>
+
+    <skill name="神亭戟法" description="对单个敌军造成严重物理伤害，爆击概率增加25%" id="003" star="3" power="255" scope="1" appertain="113">
+        <cost mana="200" work="300"/>
+        <effect type="when-attach" probability="100" action="add-critical-rate" value="25%"/>
+    </skill>
+
+    <skill name="三箭定天山" description="对三个敌军造成严重物理伤害，目标生命百分比越低效果越强" id="004" star="3" power="95" scope="3" appertain="112">
+        <cost mana="200" work="100"/>
+        <effect type="hp-enemy" probability="100" action="add-hurt" value="5%"/>
     </skill>
 </skill-list>

@@ -1,34 +1,53 @@
 import 'package:flutter/material.dart';
 
 main() {
-  runApp(MyApp());
+  runApp(MaterialApp(
+    home: Scaffold(
+      body: MyApp(),
+    ),
+    routes: {
+      "detail": (c) => NewPage(),
+    },
+  ));
 }
 
 class MyApp extends StatelessWidget {
+  int index = -1;
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text("ABC"),
-        ),
-        body: Column(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Spacer(),
-            Expanded(child: Text("One")),
-            Expanded(
-                flex: 2,
-                child: Text(
-                  "Two",
-                  style: TextStyle(fontSize: 54),
-                )),
-            Expanded(child: Text("Three"))
-          ],
+    return Center(
+      child: SingleChildScrollView(
+        child: Container(
+          width: 100,
+          height: 1000,
+          child: LayoutBuilder(
+              builder: (BuildContext context, BoxConstraints constraints) {
+            index++;
+            return Stack(
+              children: <Widget>[
+                Positioned(
+                    left: 10,
+                    top: 10,
+                    right: 50,
+                    bottom: 50,
+                    child: FlatButton(
+                        onPressed: () {
+                          Navigator.of(context).pushNamed("detail");
+                        },
+                        child: Text("Click $index")))
+              ],
+            );
+          }),
         ),
       ),
     );
+  }
+}
+
+class NewPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Center(child: Text("NewPage"));
   }
 }

@@ -1,36 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <npc-list>
-    <npc id="01" name="武器店" action="交易|打造" type = "0"/>
-    <npc id="02" name="锻冶屋" action="打造" type = "0"/>
-    <npc id="03" name="防具店" action="交易|打造" type = "0"/>
-    <npc id="04" name="裁缝铺" action="打造" type = "0"/>
-    <npc id="05" name="首饰店" action="交易|打造" type = "0"/>
-    <npc id="06" name="巧匠铺" action="打造" type = "0"/>
-    <npc id="07" name="神秘商人" action="交易" type = "1"/>
-    <npc id="08" name="书店" action="交易" type = "0"/>
-    <npc id="09" name="杂货店" action="交易" type = "0"/>
-    <npc id="10" name="官府" action="内政" type = "0"/>
-    <npc id="11" name="兵营" action="征兵" type = "0"/>
-    <npc id="12" name="酒肆" action="打听消息|委托" type = "0"/>
-    <npc id="13" name="寄售行" action="寄售|购买" type = "0"/>
+    <npc name="武器店" action="交易|打造" id="01" type="0" />
+    <npc name="锻冶屋" action="打造" id="02" type="0" />
+    <npc name="防具店" action="交易|打造" id="03" type="0" />
+    <npc name="裁缝铺" action="打造" id="04" type="0" />
+    <npc name="首饰店" action="交易|打造" id="05" type="0" />
+    <npc name="巧匠铺" action="打造" id="06" type="0" />
+    <npc name="神秘商人" action="交易" id="07" type="1" />
+    <npc name="书店" action="交易" id="08" type="0" />
+    <npc name="杂货店" action="交易" id="09" type="0" />
+    <npc name="官府" action="内政" id="10" type="0" />
+    <npc name="兵营" action="征兵" id="11" type="0" />
+    <npc name="酒肆" action="打听消息|委托" id="12" type="0" />
+    <npc name="寄售行" action="寄售|购买" id="13" type="0" />
 
-    <npc id="101" name="刘备" action="" type = "2" level="90"/>
-    <npc id="102" name="诸葛亮" action="" type = "2" level="100"/>
-    <npc id="103" name="周瑜" action="" type = "2" level="100"/>
-    <npc id="104" name="司马懿" action="" type = "2" level="100"/>
-    <npc id="105" name="吕布" action="" type = "2" level="100"/>
-    <npc id="106" name="曹操" action="" type = "2" level="95"/>
-    <npc id="107" name="关羽" action="" type = "2" level="95"/>
-    <npc id="108" name="张飞" action="" type = "2" level="95"/>
-    <npc id="109" name="徐晃" action="" type = "2" level="85"/>
-    <npc id="110" name="董卓" action="" type = "2" level="85"/>
-    <npc id="111" name="赵云" action="" type = "2" level="95"/>
-    <npc id="112" name="马超" action="" type = "2" level="95"/>
-    <npc id="113" name="太史慈" action="" type = "2" level="90"/>
-    <npc id="114" name="孙策" action="" type = "2" level="95"/>
-    <npc id="115" name="刘表" action="" type = "2" level="80"/>
-    <npc id="116" name="马腾" action="" type = "2" level="75"/>
-    <npc id="117" name="韩遂" action="" type = "2" level="75"/>
-    <npc id="118" name="阎行" action="" type = "2" level="65"/>
-    <npc id="119" name="黄祖" action="" type = "2" level="60"/>
+    <npc name="刘备" action="观察|切磋" alias="玄德" desc="待补充" id="101" level="90"
+        property="50|50|50|50" shortDesc="河东郡解县(今山西运城)人，人称“美髯公”。" type="2" stunt="001"/>
+    <npc name="诸葛亮" action="观察" alias="孔明" desc="待补充" id="102" level="100"
+        property="50|50|50|50" shortDesc="河东郡解县(今山西运城)人，人称“美髯公”。" type="2" stunt="001"/>
+    <npc name="周瑜" action="观察" alias="公瑾" desc="待补充" id="103" level="100"
+        property="50|50|50|50" shortDesc="河东郡解县(今山西运城)人，人称“美髯公”。" type="2" stunt="001"/>
+    <npc name="司马懿" action="观察" alias="仲达" desc="待补充" id="104" level="100"
+        property="50|50|50|50" shortDesc="河东郡解县(今山西运城)人，人称“美髯公”。" type="2" stunt="001"/>
+    <npc name="吕布" action="观察" alias="奉先" desc="待补充" id="105" level="100"
+        property="50|50|50|50" shortDesc="河东郡解县(今山西运城)人，人称“美髯公”。" type="2" stunt="001"/>
+    <npc name="曹操" action="观察" alias="孟德" desc="待补充" id="106" level="95"
+        property="50|50|50|50" shortDesc="河东郡解县(今山西运城)人，人称“美髯公”。" type="2" stunt="001"/>
+    <npc name="关羽" action="观察" alias="云长" desc="待补充" id="107" level="95"
+        property="50|50|50|50" shortDesc="河东郡解县(今山西运城)人，人称“美髯公”。" type="2" stunt="001"/>
+    <npc name="张飞" action="观察" alias="翼德" desc="待补充" id="108" level="95"
+        property="50|50|50|50" shortDesc="河东郡解县(今山西运城)人，人称“美髯公”。" type="2" stunt="001"/>
+    <npc name="徐晃" action="观察" alias="公明" desc="待补充" id="109" level="85"
+        property="50|50|50|50" shortDesc="河东郡解县(今山西运城)人，人称“美髯公”。" type="2" stunt="001"/>
+    <npc name="董卓" action="观察" alias="仲颖" desc="待补充" id="110" level="85"
+        property="50|50|50|50" shortDesc="河东郡解县(今山西运城)人，人称“美髯公”。" type="2" stunt="001"/>
+    <npc name="赵云" action="观察" alias="子龙" desc="待补充" id="111" level="95"
+        property="50|50|50|50" shortDesc="河东郡解县(今山西运城)人，人称“美髯公”。" type="2" stunt="001"/>
+    <npc name="马超" action="观察" alias="孟起" desc="待补充" id="112" level="95"
+        property="50|50|50|50" shortDesc="河东郡解县(今山西运城)人，人称“美髯公”。" type="2" stunt="001"/>
+    <npc name="太史慈" action="观察" alias="子义" desc="待补充" id="113" level="90"
+        property="50|50|50|50" shortDesc="河东郡解县(今山西运城)人，人称“美髯公”。" type="2" stunt="001"/>
+    <npc name="孙策" action="观察" alias="伯符" desc="待补充" id="114" level="95"
+        property="50|50|50|50" shortDesc="河东郡解县(今山西运城)人，人称“美髯公”。" type="2" stunt="001"/>
+    <npc name="刘表" action="观察" alias="玄德" desc="待补充" id="115" level="80"
+        property="50|50|50|50" shortDesc="河东郡解县(今山西运城)人，人称“美髯公”。" type="2" stunt="001"/>
+    <npc name="马腾" action="观察" alias="玄德" desc="待补充" id="116" level="75"
+        property="50|50|50|50" shortDesc="河东郡解县(今山西运城)人，人称“美髯公”。" type="2" stunt="001"/>
+    <npc name="韩遂" action="观察" alias="玄德" desc="待补充" id="117" level="75"
+        property="50|50|50|50" shortDesc="河东郡解县(今山西运城)人，人称“美髯公”。" type="2" stunt="001"/>
+    <npc name="阎行" action="观察" alias="玄德" desc="待补充" id="118" level="65"
+        property="50|50|50|50" shortDesc="河东郡解县(今山西运城)人，人称“美髯公”。" type="2" stunt="001"/>
+    <npc name="黄祖" action="观察" alias="玄德" desc="待补充" id="119" level="60"
+        property="50|50|50|50" shortDesc="河东郡解县(今山西运城)人，人称“美髯公”。" type="2" stunt="001"/>
 </npc-list>

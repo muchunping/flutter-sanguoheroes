@@ -4,27 +4,33 @@ class Npc {
   final String id;
   final String name;
   final String type;
-  final String action;
+  final List<String> actions;
+  final String alias;
+  final String property;
+  final String level;
+  final String desc;
+  final String shortDesc;
+  final String stunt;
 
-  Npc(this.id, this.name, this.type, this.action);
+  Npc._internal(this.id, this.name, this.type, this.actions, this.alias,
+      this.property, this.level, this.desc, this.shortDesc, this.stunt);
 
-  Npc.fromXml(xml.XmlElement element)
-      : id = element.attributes.firstWhere((attribute) {
-          return attribute.name.local == "id";
-        }).value,
-        name = element.attributes.firstWhere((attribute) {
-          return attribute.name.local == "name";
-        }).value,
-        type = element.attributes.firstWhere((attribute) {
-          return attribute.name.local == "type";
-        }).value,
-        action = element.attributes.firstWhere((attribute) {
-          return attribute.name.local == "action";
-        }).value;
+  factory Npc(xml.XmlElement element) {
+    return Npc._internal(
+        element.getAttribute("id"),
+        element.getAttribute("name"),
+        element.getAttribute("type"),
+        element.getAttribute("action").split("|"),
+        element.getAttribute("alias"),
+        element.getAttribute("property"),
+        element.getAttribute("level"),
+        element.getAttribute("desc"),
+        element.getAttribute("shortDesc"),
+        element.getAttribute("stunt"));
+  }
 
   @override
   String toString() {
-    return 'Npc{id: $id, name: $name, type: $type, action: $action}';
+    return 'Npc{id: $id, name: $name, type: $type, action: $actions}';
   }
-
 }

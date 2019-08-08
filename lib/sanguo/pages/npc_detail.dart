@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:sanguo_heroes/sanguo/index.dart';
+import 'package:sanguo_heroes/sanguo/models/npc.dart';
 
-main() => runApp(MaterialApp(home: Detail()));
+main() => runApp(MaterialApp(home: NpcDetail()));
 
-class Detail extends StatelessWidget {
+class NpcDetail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var smallStyle = TextStyle(color: Colors.white, fontSize: 12 * scaleX);
-    var padding =
-        EdgeInsets.symmetric(vertical: 1 * scaleX, horizontal: 2 * scaleX);
+    var npc  = ModalRoute.of(context).settings.arguments as Npc;
 
     return Scaffold(
       body: SafeArea(
@@ -174,7 +174,7 @@ class Detail extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: <Widget>[
                         Text(
-                          "关羽",
+                          npc.name,
                           style: TextStyle(
                               color: Colors.white, fontSize: 16 * scaleX),
                         ),

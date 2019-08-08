@@ -45,9 +45,11 @@ class SceneShower extends StatelessWidget {
       while (hasCover) {
         hasCover = false;
         dx = random.nextInt((size.width - 20 * scaleX - radius * 2).toInt()) +
-            10 * scaleX + radius;
+            10 * scaleX +
+            radius;
         dy = random.nextInt((size.height - 20 * scaleX - radius * 2).toInt()) +
-            10 * scaleX + radius;
+            10 * scaleX +
+            radius;
         for (var rect in rectAll) {
           if (Math.sqrt(Math.pow(rect.center.dx - dx, 2) +
                   Math.pow(rect.center.dy - dy, 2)) <
@@ -64,7 +66,14 @@ class SceneShower extends StatelessWidget {
     }
   }
 
+
+
+
   void handAction(BuildContext context, String action, Npc npc) {
+    if (action == "观察") {
+      Navigator.of(context).pushNamed("detail", arguments: npc);
+      return;
+    }
     showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -80,12 +89,12 @@ class SceneShower extends StatelessWidget {
                   return Row(
                     children: <Widget>[
                       Container(
-                        width: 100* scaleX,
+                        width: 100 * scaleX,
                         height: 200 * scaleX,
                         color: Colors.green,
                       ),
                       Container(
-                        width: 190* scaleX,
+                        width: 190 * scaleX,
                         height: 200 * scaleX,
                         color: Colors.blueAccent,
                       )
@@ -118,8 +127,7 @@ class SceneShower extends StatelessWidget {
                     builder: (BuildContext context) {
                       return SimpleDialog(
                           title: Text("选择"),
-                          children: npc.action
-                              .split("|")
+                          children: npc.actions
                               .map<SimpleDialogOption>((String action) {
                             return SimpleDialogOption(
                               child: Text(action),
@@ -147,7 +155,24 @@ class SceneShower extends StatelessWidget {
           var rect = generateRect(constraints.biggest, npc);
           return Positioned(
             child: InkWell(
-              onTap: () {},
+              onTap: () {
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return SimpleDialog(
+                          title: Text("选择"),
+                          children: npc.actions
+                              .map<SimpleDialogOption>((String action) {
+                            return SimpleDialogOption(
+                              child: Text(action),
+                              onPressed: () {
+                                Navigator.pop(context);
+                                handAction(context, action, npc);
+                              },
+                            );
+                          }).toList());
+                    });
+              },
               child: Container(
                 width: rect.width,
                 height: rect.height,
@@ -162,6 +187,8 @@ class SceneShower extends StatelessWidget {
           );
         });
         var list = listOne.toList() + listTwo.toList();
+        print(list.length);
+        print("index=$index");
         return Stack(
           children: list,
         );

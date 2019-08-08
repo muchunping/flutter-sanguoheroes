@@ -26,6 +26,7 @@ class WorldContext {
     });
     sceneMap = Map<String, Scene>.fromIterable(sceneList,
         key: (item) => (item as Scene).id, value: (item) => item);
+    print("sceneMap=$sceneMap");
     f(progress += 10);
     for (var i = 0; i < 20; i++) {
       await new Future.delayed(const Duration(milliseconds: 50));
@@ -34,11 +35,12 @@ class WorldContext {
     var npcList = await assetBundle
         .loadStructuredData<List<Npc>>("xmls/npcs.xml", (data) {
       return parseXml<Npc>(data, (element) {
-        return Npc.fromXml(element);
+        return Npc(element);
       });
     });
     npcMap = Map<String, Npc>.fromIterable(npcList,
         key: (item) => (item as Npc).id, value: (item) => item);
+    print("npcMap=$npcMap");
     f(progress += 10);
     for (var i = 0; i < 20; i++) {
       await new Future.delayed(const Duration(milliseconds: 50));
@@ -52,6 +54,7 @@ class WorldContext {
     });
     itemMap = Map<String, Item>.fromIterable(itemList,
         key: (item) => (item as Item).id, value: (item) => item);
+    print("itemMap=$itemMap");
     f(progress += 20);
     initConfig();
     for (var i = 0; i < 20; i++) {
