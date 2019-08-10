@@ -26,8 +26,8 @@ class MyApp extends StatelessWidget {
       home: WelcomePage(),
       routes: {
         "home": (c) => hp.HomePage(),
-//        "detail": (c) => NpcDetail(),
-        "detail": (c) => NewPage(),
+        "detail": (c) => NpcDetail(),
+//        "detail": (c) => NewPage(),
       },
     );
   }

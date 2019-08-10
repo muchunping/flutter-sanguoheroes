@@ -66,9 +66,6 @@ class SceneShower extends StatelessWidget {
     }
   }
 
-
-
-
   void handAction(BuildContext context, String action, Npc npc) {
     if (action == "观察") {
       Navigator.of(context).pushNamed("detail", arguments: npc);
@@ -109,90 +106,99 @@ class SceneShower extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var list2 = npcList.where((npc) {
-      return npc.id.length >= 3;
-    });
-    var list1 = npcList.where((npc) {
-      return npc.id.length < 3;
-    });
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
-        var listOne = list1.map((npc) {
-          var rect = generateRect(constraints.biggest, npc);
-          return Positioned(
-            child: InkWell(
-              onTap: () {
-                showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return SimpleDialog(
-                          title: Text("选择"),
-                          children: npc.actions
-                              .map<SimpleDialogOption>((String action) {
-                            return SimpleDialogOption(
-                              child: Text(action),
-                              onPressed: () {
-                                Navigator.pop(context);
-                                handAction(context, action, npc);
-                              },
-                            );
-                          }).toList());
-                    });
-              },
-              child: Container(
-                width: rect.width,
-                height: rect.height,
-                decoration:
-                    BoxDecoration(border: Border.all(color: Colors.blueAccent)),
-                child: Center(child: Text(npc.name, style: shopStyle)),
-              ),
-            ),
-            left: rect.left,
-            top: rect.top,
-          );
-        });
-        var listTwo = list2.map((npc) {
-          var rect = generateRect(constraints.biggest, npc);
-          return Positioned(
-            child: InkWell(
-              onTap: () {
-                showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return SimpleDialog(
-                          title: Text("选择"),
-                          children: npc.actions
-                              .map<SimpleDialogOption>((String action) {
-                            return SimpleDialogOption(
-                              child: Text(action),
-                              onPressed: () {
-                                Navigator.pop(context);
-                                handAction(context, action, npc);
-                              },
-                            );
-                          }).toList());
-                    });
-              },
-              child: Container(
-                width: rect.width,
-                height: rect.height,
-                decoration: BoxDecoration(
-                    border: Border.all(color: Colors.blueAccent),
-                    borderRadius: BorderRadius.circular(rect.width / 2)),
-                child: Center(child: Text(npc.name, style: shopStyle)),
-              ),
-            ),
-            left: rect.left,
-            top: rect.top,
-          );
-        });
-        var list = listOne.toList() + listTwo.toList();
-        print(list.length);
-        print("index=$index");
         return Stack(
-          children: list,
+          children: npcList.map((e) {
+            return _NpcShower(
+                rect: generateRect(constraints.biggest, e), npc: e);
+          }).toList(),
         );
       },
     );
+  }
+}
+
+class _NpcShower extends StatelessWidget {
+  final Rect rect;
+  final Npc npc;
+
+  _NpcShower({Key key, this.rect, this.npc}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var shopStyle = TextStyle(color: Colors.blueAccent, fontSize: 14 * scaleX);
+    return Positioned(
+      child: InkWell(
+        onTap: () {
+          showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return SimpleDialog(
+                    title: Text("选择"),
+                    children:
+                        npc.actions.map<SimpleDialogOption>((String action) {
+                      return SimpleDialogOption(
+                        child: Text(action),
+                        onPressed: () {
+                          Navigator.pop(context);
+                          handAction(context, action, npc);
+                        },
+                      );
+                    }).toList());
+              });
+        },
+        child: Container(
+          width: rect.width,
+          height: rect.height,
+          decoration: npc.id.length < 3
+              ? BoxDecoration(border: Border.all(color: Colors.blueAccent))
+              : BoxDecoration(
+                  border: Border.all(color: Colors.blueAccent),
+                  borderRadius: BorderRadius.circular(rect.width / 2)),
+          child: Center(child: Text(npc.name, style: shopStyle)),
+        ),
+      ),
+      left: rect.left,
+      top: rect.top,
+    );
+  }
+
+  void handAction(BuildContext context, String action, Npc npc) {
+    if (action == "观察") {
+      Navigator.of(context).pushNamed("detail", arguments: npc);
+      return;
+    }
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return SimpleDialog(title: Text("选择"), children: [
+            SingleChildScrollView(
+              child: Container(
+                width: 280 * scaleX,
+                height: 160 * scaleX,
+                color: Colors.yellowAccent,
+                child: LayoutBuilder(builder: (c, b) {
+                  print(b.biggest.width);
+                  print(b.biggest.width / scaleX);
+                  return Row(
+                    children: <Widget>[
+                      Container(
+                        width: 100 * scaleX,
+                        height: 200 * scaleX,
+                        color: Colors.green,
+                      ),
+                      Container(
+                        width: 190 * scaleX,
+                        height: 200 * scaleX,
+                        color: Colors.blueAccent,
+                      )
+                    ],
+                  );
+                }),
+              ),
+            )
+          ]);
+        });
   }
 }
