@@ -66,44 +66,6 @@ class SceneShower extends StatelessWidget {
     }
   }
 
-  void handAction(BuildContext context, String action, Npc npc) {
-    if (action == "观察") {
-      Navigator.of(context).pushNamed("detail", arguments: npc);
-      return;
-    }
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return SimpleDialog(title: Text("选择"), children: [
-            SingleChildScrollView(
-              child: Container(
-                width: 280 * scaleX,
-                height: 160 * scaleX,
-                color: Colors.yellowAccent,
-                child: LayoutBuilder(builder: (c, b) {
-                  print(b.biggest.width);
-                  print(b.biggest.width / scaleX);
-                  return Row(
-                    children: <Widget>[
-                      Container(
-                        width: 100 * scaleX,
-                        height: 200 * scaleX,
-                        color: Colors.green,
-                      ),
-                      Container(
-                        width: 190 * scaleX,
-                        height: 200 * scaleX,
-                        color: Colors.blueAccent,
-                      )
-                    ],
-                  );
-                }),
-              ),
-            )
-          ]);
-        });
-  }
-
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
