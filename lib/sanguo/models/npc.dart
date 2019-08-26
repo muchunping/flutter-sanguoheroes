@@ -1,6 +1,7 @@
+import 'package:sanguo_heroes/sanguo/models/fighter.dart';
 import "package:xml/xml.dart" as xml;
 
-class Npc {
+class Npc extends Fighter{
   final String id;
   final String name;
   final String type;

@@ -1,6 +1,7 @@
 import 'package:sanguo_heroes/sanguo/index.dart';
+import 'package:sanguo_heroes/sanguo/models/fighter.dart';
 
-class Player {
+class Player extends Fighter{
   String name = "";
   bool sex;
   int level;

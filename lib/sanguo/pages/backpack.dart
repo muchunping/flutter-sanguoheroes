@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../index.dart';
 
-main() => runApp(MaterialApp(home: BackpackPage(amount: 50)));
+main() => runApp(MaterialApp(home: BackpackPage(amount: 100)));
 
 class BackpackPage extends StatelessWidget {
   final int amount;
@@ -31,13 +31,16 @@ class BackpackPage extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Padding(
+                    Container(
+                      width: double.infinity,
                       padding: EdgeInsets.all(10 * scaleX),
+                      color: Colors.green,
                       child: Text(
                         "背包",
-                        style: TextStyle(color: Colors.white, fontSize: 18),
+                        style: TextStyle(color: Colors.white, fontSize: 22),
                       ),
                     ),
+                    Padding(padding: EdgeInsets.all(2 * scaleX)),
                     Expanded(
                       child: Container(
                         child: GridView.builder(
@@ -54,7 +57,8 @@ class BackpackPage extends StatelessWidget {
                               return _LootInBackpack(i < amount);
                             }),
                       ),
-                    )
+                    ),
+                    Padding(padding: EdgeInsets.all(2 * scaleX)),
                   ],
                 ),
               ),
@@ -67,16 +71,30 @@ class BackpackPage extends StatelessWidget {
 }
 
 class _LootInBackpack extends StatelessWidget {
-  final bool isEmpty;
+  final bool isNotEmpty;
 
-  _LootInBackpack(this.isEmpty);
+  _LootInBackpack(this.isNotEmpty);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
           color: Colors.green, border: Border.all(color: Colors.blue)),
-      child: !isEmpty ? null : Image.asset("images/email.png"),
+      child: Stack(
+        children: isNotEmpty
+            ? <Widget>[
+                Image.asset("images/email.png"),
+                Positioned(
+                  child: Text(
+                    "9999",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  right: 2 * scaleX,
+                  bottom: 2 * scaleX,
+                )
+              ]
+            : [],
+      ),
     );
   }
 }
