@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:provide/provide.dart';
 import 'package:sanguo_heroes/sanguo/index.dart';
 import 'package:sanguo_heroes/sanguo/models/fighter.dart';
 import 'package:sanguo_heroes/sanguo/models/fighter_group.dart';
@@ -48,40 +51,85 @@ class Battlefield extends StatefulWidget {
 class _BattleState extends State<Battlefield> {
   final FighterGroup attackerSide;
   final FighterGroup defenderSide;
-  var messageList = ["战斗准备"];
+  var messageList = _MessageList();
+  var providers = Providers();
   var attackGrids = {};
   var defenseGrids = {};
-  var timeSequence = 0;
-  var array = {"":""};
+  var timeSequence = 0.0;
+  Map<Fighter, double> array = {};
 
   _BattleState(this.attackerSide, this.defenderSide);
 
   @override
   void initState() {
     super.initState();
-    messageList.add("进攻方：诸葛亮施放了「真*虚空无极」对全部敌人造成了15点伤害，以及持续2回合的3点后续伤害");
-    messageList.add("进攻方：曹操施放了「雄霸天下」所有友方持续3回合增加5点进攻");
-    array[""] = "";
+    attackerSide.setFightSide(FightSide.attacker);
+    defenderSide.setFightSide(FightSide.defender);
+    providers..provide(Provider<_MessageList>.value(messageList));
+    array[attackerSide.mainFighter] = attackerSide.mainFighter.duration;
+    array[defenderSide.mainFighter] = defenderSide.mainFighter.duration;
+    attackerSide.fighters.forEach((k, v) {
+      array[v] = v.duration;
+    });
+    defenderSide.fighters.forEach((k, v) {
+      array[v] = v.duration;
+    });
+    print(array);
     beginFight();
   }
 
   Future beginFight() async {
     while (true) {
-      if (attackerSide.mainFighter.health <= 0) {
-        messageList.add("防守方胜利");
-        break;
+      timeSequence = (array.values.toList()..sort())[0];
+      var fighters =
+          array.entries.where((e) => e.value == timeSequence).map<Fighter>((e) {
+        return e.key;
+      });
+      var attackerFighters =
+          fighters.where((e) => e.fightSide == FightSide.attacker).toList();
+      var defenderFighters =
+          fighters.where((e) => e.fightSide == FightSide.defender).toList();
+      bool attacker = true;
+      while (attackerFighters.isNotEmpty || defenderFighters.isNotEmpty) {
+        Fighter fighter;
+        if (attacker) {
+          if (attackerFighters.isNotEmpty) {
+            fighter = attackerFighters.removeAt(0);
+          } else {
+            fighter = defenderFighters.removeAt(0);
+          }
+        } else {
+          if (defenderFighters.isNotEmpty) {
+            fighter = defenderFighters.removeAt(0);
+          } else {
+            fighter = attackerFighters.removeAt(0);
+          }
+        }
+        attacker = !attacker;
+        await fighterAction(fighter);
+        array[fighter] += fighter.duration;
+        if (attackerSide.mainFighter.health <= 0) {
+          messageList.add("防守方胜利");
+          return;
+        }
+        if (defenderSide.mainFighter.health <= 0) {
+          messageList.add("进攻方胜利");
+          return;
+        }
       }
-      if (defenderSide.mainFighter.health <= 0) {
-        messageList.add("进攻方胜利");
-        break;
-      }
-      Fighter fighter = nextActor();
-      await new Future.delayed(const Duration(milliseconds: 50));
     }
   }
 
-  Fighter nextActor() {
-
+  Future fighterAction(Fighter fighter) async {
+    if (fighter.fightSide == FightSide.attacker) {
+      var location = attackerSide.getLocation(fighter);
+      messageList.add("${timeSequence.toStringAsFixed(2)} 进攻方的$location开始行动");
+    } else {
+      var location = defenderSide.getLocation(fighter);
+      messageList.add("${timeSequence.toStringAsFixed(2)} 防守方的$location开始行动");
+    }
+    await new Future.delayed(const Duration(milliseconds: 1000));
+    messageList.add(" 行动结束");
   }
 
   Widget buildMasterGrid(Fighter fighter) {
@@ -117,13 +165,13 @@ class _BattleState extends State<Battlefield> {
   @override
   Widget build(BuildContext context) {
     attackGrids["0"] = buildMasterGrid(attackerSide.mainFighter);
-    attackGrids["1"] = buildAssistantGrid(attackerSide.fighters[0]);
-    attackGrids["2"] = buildAssistantGrid(attackerSide.fighters[1]);
-    attackGrids["3"] = buildAssistantGrid(attackerSide.fighters[2]);
+    attackGrids["1"] = buildAssistantGrid(attackerSide.fighters["a"]);
+    attackGrids["2"] = buildAssistantGrid(attackerSide.fighters["b"]);
+    attackGrids["3"] = buildAssistantGrid(attackerSide.fighters["c"]);
     defenseGrids["0"] = buildMasterGrid(defenderSide.mainFighter);
-    defenseGrids["1"] = buildAssistantGrid(defenderSide.fighters[0]);
-    defenseGrids["2"] = buildAssistantGrid(defenderSide.fighters[1]);
-    defenseGrids["3"] = buildAssistantGrid(defenderSide.fighters[2]);
+    defenseGrids["1"] = buildAssistantGrid(defenderSide.fighters["a"]);
+    defenseGrids["2"] = buildAssistantGrid(defenderSide.fighters["b"]);
+    defenseGrids["3"] = buildAssistantGrid(defenderSide.fighters["c"]);
     return Column(
       children: <Widget>[
         Container(
@@ -208,15 +256,29 @@ class _BattleState extends State<Battlefield> {
         Expanded(
           child: Padding(
             padding: EdgeInsets.all(8 * scaleX),
-            child: ListView.builder(
-              itemBuilder: (c, i) {
-                return Text(messageList[i]);
-              },
-              itemCount: messageList.length,
-            ),
+            child: ProviderNode(
+                child: Provide<_MessageList>(builder: (c, w, m) {
+                  return ListView.builder(
+                    itemBuilder: (c, i) {
+                      return Text(m.messageList[i]);
+                    },
+                    itemCount: m.messageList.length,
+                    physics: BouncingScrollPhysics(),
+                  );
+                }),
+                providers: providers),
           ),
         )
       ],
     );
+  }
+}
+
+class _MessageList with ChangeNotifier {
+  List<String> messageList = [];
+
+  void add(String message) {
+    messageList.insert(0, message);
+    notifyListeners();
   }
 }
