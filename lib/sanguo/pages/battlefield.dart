@@ -10,21 +10,15 @@ import 'package:sanguo_heroes/sanguo/models/player.dart';
 main() => runApp(MaterialApp(
       home: Scaffold(
         body: SafeArea(
-          child: MultiProvider(
             child: Battlefield(
-              attacker: FighterGroup(mainFighter: attacker(), fighters: {
-                "a": attacker()..speed = 105,
-                "b": attacker()..speed = 110
-              }),
-              defender: FighterGroup(
-                  mainFighter: defender(),
-                  fighters: {"a": attacker()..speed = 104}),
-            ),
-            providers: [
-              ChangeNotifierProvider(builder: (_) => _MessageList()),
-            ],
-          ),
-        ),
+          attackerSide: FighterGroup(mainFighter: attacker(), fighters: {
+            "a": attacker()..speed = 105,
+            "b": attacker()..speed = 110
+          }),
+          defenderSide: FighterGroup(
+              mainFighter: defender(),
+              fighters: {"a": attacker()..speed = 104}),
+        )),
       ),
     ));
 
@@ -46,31 +40,43 @@ Player defender() {
   return defender;
 }
 
-class Battlefield extends StatefulWidget {
-  final FighterGroup attacker;
-  final FighterGroup defender;
+class Battlefield extends StatelessWidget {
+  final FighterGroup attackerSide;
+  final FighterGroup defenderSide;
 
-  Battlefield({Key key, this.attacker, this.defender}) : super(key: key);
+  Battlefield({Key key, this.attackerSide, this.defenderSide})
+      : super(key: key);
 
   @override
-  State<StatefulWidget> createState() {
-    return _BattleState(attacker, defender);
+  Widget build(BuildContext context) {
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(builder: (_) => _MessageList()),
+        ChangeNotifierProvider(builder: (_) => _TimeSequence()),
+      ],
+      child: _Impl(attackerSide: attackerSide, defenderSide: defenderSide),
+    );
   }
 }
 
-class _BattleState extends State<Battlefield> {
+class _Impl extends StatefulWidget{
   final FighterGroup attackerSide;
   final FighterGroup defenderSide;
-  var attackGrids = {};
-  var defenseGrids = {};
-  var timeSequence = 0.0;
-  Map<Fighter, double> array = {};
 
-  _BattleState(this.attackerSide, this.defenderSide);
+  _Impl({Key key, this.attackerSide, this.defenderSide}) : super(key: key);
 
   @override
-  void initState() {
-    super.initState();
+  State<StatefulWidget> createState() {
+    return _State(attackerSide, defenderSide);
+  }
+}
+
+class _State extends State<_Impl> {
+  final FighterGroup attackerSide;
+  final FighterGroup defenderSide;
+  final Map<Fighter, double> array = {};
+
+  _State(this.attackerSide, this.defenderSide) {
     attackerSide.setFightSide(FightSide.attacker);
     defenderSide.setFightSide(FightSide.defender);
     array[attackerSide.mainFighter] = attackerSide.mainFighter.duration;
@@ -81,18 +87,28 @@ class _BattleState extends State<Battlefield> {
     defenderSide.fighters.forEach((k, v) {
       array[v] = v.duration;
     });
-    print(array);
-    beginFight();
   }
 
-  void addMessage(String message) {
+  @override
+  void initState() {
+    super.initState();
+    beginFight(context);
+  }
+
+  void addMessage(BuildContext context, String message) {
     Provider.of<_MessageList>(context, listen: false).add(message);
   }
 
-  Future beginFight() async {
+  void updateTimeSequence(BuildContext context, double timeSequence) {
+    Provider.of<_TimeSequence>(context, listen: false).change(timeSequence);
+  }
+
+  Future beginFight(BuildContext context) async {
+    var timeSequence = 0.0;
     await new Future.delayed(const Duration(milliseconds: 1000));
     while (true) {
       timeSequence = (array.values.toList()..sort())[0];
+      updateTimeSequence(context, timeSequence);
       var fighters =
           array.entries.where((e) => e.value == timeSequence).map<Fighter>((e) {
         return e.key;
@@ -118,166 +134,127 @@ class _BattleState extends State<Battlefield> {
           }
         }
         attacker = !attacker;
-        await fighterAction(fighter);
+        await fighterAction(context, timeSequence, fighter);
         array[fighter] += fighter.duration;
         if (attackerSide.mainFighter.health <= 0) {
-          addMessage("防守方胜利");
+          addMessage(context, "防守方胜利");
           return;
         }
         if (defenderSide.mainFighter.health <= 0) {
-          addMessage("进攻方胜利");
+          addMessage(context, "进攻方胜利");
           return;
         }
       }
     }
   }
 
-  Future fighterAction(Fighter fighter) async {
+  Future fighterAction(
+      BuildContext context, double timeSequence, Fighter fighter) async {
     if (fighter.fightSide == FightSide.attacker) {
       var location = attackerSide.getLocation(fighter);
-      addMessage("${timeSequence.toStringAsFixed(2)} 进攻方的$location开始行动");
+      addMessage(
+          context, "${timeSequence.toStringAsFixed(2)} 进攻方的$location开始行动");
     } else {
       var location = defenderSide.getLocation(fighter);
-      addMessage("${timeSequence.toStringAsFixed(2)} 防守方的$location开始行动");
+      addMessage(
+          context, "${timeSequence.toStringAsFixed(2)} 防守方的$location开始行动");
     }
     await new Future.delayed(const Duration(milliseconds: 1000));
-    addMessage(" 行动结束");
+    addMessage(context, " 行动结束");
     await new Future.delayed(const Duration(milliseconds: 1000));
-  }
-
-  Widget buildMasterGrid(Fighter fighter) {
-    return Container(
-      width: 80 * scaleX,
-      height: 80 * scaleX,
-      child: buildActor(fighter),
-      decoration: BoxDecoration(border: Border.all(color: Colors.blue)),
-    );
-  }
-
-  Widget buildAssistantGrid(Fighter fighter) {
-    return Container(
-      width: 48 * scaleX,
-      height: 48 * scaleX,
-      child: buildActor(fighter),
-      decoration: BoxDecoration(border: Border.all(color: Colors.blue)),
-    );
-  }
-
-  Widget buildActor(Fighter fighter) {
-    if (fighter == null) {
-      return null;
-    }
-    return Stack(
-      children: <Widget>[
-        Image.asset("images/guanyu.jpg", fit: BoxFit.fitHeight),
-        SizedBox(
-          height: 2 * scaleX,
-          child: LinearProgressIndicator(value: 0.5),
-        ),
-        Padding(
-          padding: EdgeInsets.only(top: 2 * scaleX),
-          child: SizedBox(
-            height: 2 * scaleX,
-            child: LinearProgressIndicator(
-                value: 0.5,
-                backgroundColor: Colors.redAccent,
-                valueColor: AlwaysStoppedAnimation<Color>(Colors.red)),
-          ),
-        )
-      ],
-    );
   }
 
   @override
   Widget build(BuildContext context) {
-    attackGrids["0"] = buildMasterGrid(attackerSide.mainFighter);
-    attackGrids["1"] = buildAssistantGrid(attackerSide.fighters["a"]);
-    attackGrids["2"] = buildAssistantGrid(attackerSide.fighters["b"]);
-    attackGrids["3"] = buildAssistantGrid(attackerSide.fighters["c"]);
-    defenseGrids["0"] = buildMasterGrid(defenderSide.mainFighter);
-    defenseGrids["1"] = buildAssistantGrid(defenderSide.fighters["a"]);
-    defenseGrids["2"] = buildAssistantGrid(defenderSide.fighters["b"]);
-    defenseGrids["3"] = buildAssistantGrid(defenderSide.fighters["c"]);
+
+    Widget buildActor(Fighter fighter) {
+      if (fighter == null) {
+        return null;
+      }
+      return Stack(
+        children: <Widget>[
+          Image.asset("images/guanyu.jpg", fit: BoxFit.fitHeight),
+          Consumer<_TimeSequence>(builder: (context, time, _) {
+            var v = (time.timeSequence % fighter.duration) / fighter.duration;
+            return SizedBox(
+                height: 2 * scaleX,
+                child: LinearProgressIndicator(
+                  value: v,
+                ));
+          }),
+          Padding(
+            padding: EdgeInsets.only(top: 2 * scaleX),
+            child: SizedBox(
+              height: 2 * scaleX,
+              child: LinearProgressIndicator(
+                  value: 0.5,
+                  backgroundColor: Colors.redAccent,
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.red)),
+            ),
+          )
+        ],
+      );
+    }
+
+    Widget buildFighter(bool isMaster, Fighter fighter) {
+      var size = isMaster ? 80 : 48;
+      return Container(
+        width: size * scaleX,
+        height: size * scaleX,
+        child: buildActor(fighter),
+        decoration: BoxDecoration(border: Border.all(color: Colors.blue)),
+      );
+    }
+
+    Widget buildFightGroup(bool left, FighterGroup group) {
+      var side = left ? "进攻方" : "防守方";
+      var alignment = left ? MainAxisAlignment.start : MainAxisAlignment.end;
+      var front = Column(
+        children: <Widget>[
+          Spacer(),
+          buildFighter(false, group.fighters["b"]),
+          Spacer(),
+          buildFighter(false, group.fighters["a"]),
+          Spacer(),
+          buildFighter(false, group.fighters["c"]),
+          Spacer(),
+        ],
+      );
+      var back = Container(
+        width: 100 * scaleX,
+        height: 100 * scaleX,
+        alignment: Alignment.center,
+        child: buildFighter(false, group.mainFighter),
+      );
+      return Column(
+        children: <Widget>[
+          Text(side, style: TextStyle(color: Colors.black, fontSize: 24)),
+          Container(
+            width: 160 * scaleX,
+            height: 160 * scaleX,
+            decoration: BoxDecoration(border: Border.all(color: Colors.red)),
+            child: Row(
+                mainAxisAlignment: alignment,
+                children: left ? [back, front] : [front, back]),
+          )
+        ],
+      );
+    }
+
     return Column(
       children: <Widget>[
+
         Container(
           width: 360 * scaleX,
           height: 240 * scaleX,
           color: Colors.yellow.shade200,
-          child: Row(
-            children: <Widget>[
-              Spacer(),
-              Column(
-                children: <Widget>[
-                  Text("进攻方",
-                      style: TextStyle(color: Colors.black, fontSize: 24)),
-                  Container(
-                    width: 160 * scaleX,
-                    height: 160 * scaleX,
-                    decoration:
-                        BoxDecoration(border: Border.all(color: Colors.red)),
-                    child: Row(
-                      children: <Widget>[
-                        Container(
-                          width: 100 * scaleX,
-                          height: 100 * scaleX,
-                          alignment: Alignment.center,
-                          child: attackGrids["0"],
-                        ),
-                        Column(
-                          children: <Widget>[
-                            Spacer(),
-                            attackGrids["2"],
-                            Spacer(),
-                            attackGrids["1"],
-                            Spacer(),
-                            attackGrids["3"],
-                            Spacer(),
-                          ],
-                        )
-                      ],
-                    ),
-                  )
-                ],
-              ),
-              Spacer(flex: 2),
-              Column(
-                children: <Widget>[
-                  Text("防守方",
-                      style: TextStyle(color: Colors.black, fontSize: 24)),
-                  Container(
-                    width: 160 * scaleX,
-                    height: 160 * scaleX,
-                    decoration:
-                        BoxDecoration(border: Border.all(color: Colors.red)),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: <Widget>[
-                        Column(
-                          children: <Widget>[
-                            Spacer(),
-                            defenseGrids["2"],
-                            Spacer(),
-                            defenseGrids["1"],
-                            Spacer(),
-                            defenseGrids["3"],
-                            Spacer(),
-                          ],
-                        ),
-                        Container(
-                          width: 100 * scaleX,
-                          height: 100 * scaleX,
-                          alignment: Alignment.center,
-                          child: defenseGrids["0"],
-                        )
-                      ],
-                    ),
-                  )
-                ],
-              ),
-              Spacer()
-            ],
-          ),
+          child: Row(children: <Widget>[
+            Spacer(),
+            buildFightGroup(true, attackerSide),
+            Spacer(flex: 2),
+            buildFightGroup(false, defenderSide),
+            Spacer()
+          ]),
         ),
         Expanded(
           child: Padding(
@@ -295,6 +272,15 @@ class _BattleState extends State<Battlefield> {
         )
       ],
     );
+  }
+}
+
+class _TimeSequence with ChangeNotifier {
+  double timeSequence = 0.0;
+
+  void change(double newTimeSequence) {
+    timeSequence = newTimeSequence;
+    notifyListeners();
   }
 }
 
