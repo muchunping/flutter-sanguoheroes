@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:provide/provide.dart';
+import 'package:provider/provider.dart';
 import 'package:sanguo_heroes/sanguo/index.dart';
 import 'package:sanguo_heroes/sanguo/models/fighter.dart';
 import 'package:sanguo_heroes/sanguo/models/fighter_group.dart';
@@ -10,9 +10,19 @@ import 'package:sanguo_heroes/sanguo/models/player.dart';
 main() => runApp(MaterialApp(
       home: Scaffold(
         body: SafeArea(
-          child: Battlefield(
-            attacker: FighterGroup(mainFighter: attacker()),
-            defender: FighterGroup(mainFighter: defender()),
+          child: MultiProvider(
+            child: Battlefield(
+              attacker: FighterGroup(mainFighter: attacker(), fighters: {
+                "a": attacker()..speed = 105,
+                "b": attacker()..speed = 110
+              }),
+              defender: FighterGroup(
+                  mainFighter: defender(),
+                  fighters: {"a": attacker()..speed = 104}),
+            ),
+            providers: [
+              ChangeNotifierProvider(builder: (_) => _MessageList()),
+            ],
           ),
         ),
       ),
@@ -51,8 +61,6 @@ class Battlefield extends StatefulWidget {
 class _BattleState extends State<Battlefield> {
   final FighterGroup attackerSide;
   final FighterGroup defenderSide;
-  var messageList = _MessageList();
-  var providers = Providers();
   var attackGrids = {};
   var defenseGrids = {};
   var timeSequence = 0.0;
@@ -65,7 +73,6 @@ class _BattleState extends State<Battlefield> {
     super.initState();
     attackerSide.setFightSide(FightSide.attacker);
     defenderSide.setFightSide(FightSide.defender);
-    providers..provide(Provider<_MessageList>.value(messageList));
     array[attackerSide.mainFighter] = attackerSide.mainFighter.duration;
     array[defenderSide.mainFighter] = defenderSide.mainFighter.duration;
     attackerSide.fighters.forEach((k, v) {
@@ -78,7 +85,12 @@ class _BattleState extends State<Battlefield> {
     beginFight();
   }
 
+  void addMessage(String message) {
+    Provider.of<_MessageList>(context, listen: false).add(message);
+  }
+
   Future beginFight() async {
+    await new Future.delayed(const Duration(milliseconds: 1000));
     while (true) {
       timeSequence = (array.values.toList()..sort())[0];
       var fighters =
@@ -109,11 +121,11 @@ class _BattleState extends State<Battlefield> {
         await fighterAction(fighter);
         array[fighter] += fighter.duration;
         if (attackerSide.mainFighter.health <= 0) {
-          messageList.add("防守方胜利");
+          addMessage("防守方胜利");
           return;
         }
         if (defenderSide.mainFighter.health <= 0) {
-          messageList.add("进攻方胜利");
+          addMessage("进攻方胜利");
           return;
         }
       }
@@ -123,20 +135,21 @@ class _BattleState extends State<Battlefield> {
   Future fighterAction(Fighter fighter) async {
     if (fighter.fightSide == FightSide.attacker) {
       var location = attackerSide.getLocation(fighter);
-      messageList.add("${timeSequence.toStringAsFixed(2)} 进攻方的$location开始行动");
+      addMessage("${timeSequence.toStringAsFixed(2)} 进攻方的$location开始行动");
     } else {
       var location = defenderSide.getLocation(fighter);
-      messageList.add("${timeSequence.toStringAsFixed(2)} 防守方的$location开始行动");
+      addMessage("${timeSequence.toStringAsFixed(2)} 防守方的$location开始行动");
     }
     await new Future.delayed(const Duration(milliseconds: 1000));
-    messageList.add(" 行动结束");
+    addMessage(" 行动结束");
+    await new Future.delayed(const Duration(milliseconds: 1000));
   }
 
   Widget buildMasterGrid(Fighter fighter) {
     return Container(
       width: 80 * scaleX,
       height: 80 * scaleX,
-      child: buildActor(),
+      child: buildActor(fighter),
       decoration: BoxDecoration(border: Border.all(color: Colors.blue)),
     );
   }
@@ -145,12 +158,15 @@ class _BattleState extends State<Battlefield> {
     return Container(
       width: 48 * scaleX,
       height: 48 * scaleX,
-      child: buildActor(),
+      child: buildActor(fighter),
       decoration: BoxDecoration(border: Border.all(color: Colors.blue)),
     );
   }
 
-  Widget buildActor() {
+  Widget buildActor(Fighter fighter) {
+    if (fighter == null) {
+      return null;
+    }
     return Stack(
       children: <Widget>[
         Image.asset("images/guanyu.jpg", fit: BoxFit.fitHeight),
@@ -158,6 +174,16 @@ class _BattleState extends State<Battlefield> {
           height: 2 * scaleX,
           child: LinearProgressIndicator(value: 0.5),
         ),
+        Padding(
+          padding: EdgeInsets.only(top: 2 * scaleX),
+          child: SizedBox(
+            height: 2 * scaleX,
+            child: LinearProgressIndicator(
+                value: 0.5,
+                backgroundColor: Colors.redAccent,
+                valueColor: AlwaysStoppedAnimation<Color>(Colors.red)),
+          ),
+        )
       ],
     );
   }
@@ -256,17 +282,15 @@ class _BattleState extends State<Battlefield> {
         Expanded(
           child: Padding(
             padding: EdgeInsets.all(8 * scaleX),
-            child: ProviderNode(
-                child: Provide<_MessageList>(builder: (c, w, m) {
-                  return ListView.builder(
-                    itemBuilder: (c, i) {
-                      return Text(m.messageList[i]);
-                    },
-                    itemCount: m.messageList.length,
-                    physics: BouncingScrollPhysics(),
-                  );
-                }),
-                providers: providers),
+            child: Consumer<_MessageList>(builder: (c, w, m) {
+              return ListView.builder(
+                itemBuilder: (c, i) {
+                  return Text(w.messageList[i]);
+                },
+                itemCount: w.messageList.length,
+                physics: BouncingScrollPhysics(),
+              );
+            }),
           ),
         )
       ],

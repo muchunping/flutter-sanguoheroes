@@ -9,7 +9,7 @@ import 'package:sanguo_heroes/sanguo/widgets/event_indicator.dart';
 import 'package:sanguo_heroes/sanguo/widgets/location_indicator.dart';
 import 'package:sanguo_heroes/sanguo/widgets/shimmer.dart';
 import 'package:sanguo_heroes/sanguo/pages/home.dart' as hp;
-import 'package:sanguo_heroes/test.dart';
+import 'package:sanguo_heroes/demo/privoders.dart';
 
 main() => runApp(MyApp());
 
