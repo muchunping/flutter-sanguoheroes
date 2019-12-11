@@ -59,24 +59,12 @@ class Battlefield extends StatelessWidget {
   }
 }
 
-class _Impl extends StatefulWidget{
-  final FighterGroup attackerSide;
-  final FighterGroup defenderSide;
-
-  _Impl({Key key, this.attackerSide, this.defenderSide}) : super(key: key);
-
-  @override
-  State<StatefulWidget> createState() {
-    return _State(attackerSide, defenderSide);
-  }
-}
-
-class _State extends State<_Impl> {
+class _Impl extends StatelessWidget {
   final FighterGroup attackerSide;
   final FighterGroup defenderSide;
   final Map<Fighter, double> array = {};
 
-  _State(this.attackerSide, this.defenderSide) {
+  _Impl({Key key, this.attackerSide, this.defenderSide}) : super(key: key) {
     attackerSide.setFightSide(FightSide.attacker);
     defenderSide.setFightSide(FightSide.defender);
     array[attackerSide.mainFighter] = attackerSide.mainFighter.duration;
@@ -87,12 +75,6 @@ class _State extends State<_Impl> {
     defenderSide.fighters.forEach((k, v) {
       array[v] = v.duration;
     });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    beginFight(context);
   }
 
   void addMessage(BuildContext context, String message) {
@@ -166,7 +148,6 @@ class _State extends State<_Impl> {
 
   @override
   Widget build(BuildContext context) {
-
     Widget buildActor(Fighter fighter) {
       if (fighter == null) {
         return null;
@@ -241,12 +222,14 @@ class _State extends State<_Impl> {
       );
     }
 
+    var decoration = BoxDecoration(
+        border: Border.all(color: Colors.deepPurple),
+        borderRadius: BorderRadius.circular(10 * scaleX));
     return Column(
       children: <Widget>[
-
         Container(
           width: 360 * scaleX,
-          height: 240 * scaleX,
+          height: 200 * scaleX,
           color: Colors.yellow.shade200,
           child: Row(children: <Widget>[
             Spacer(),
@@ -256,6 +239,7 @@ class _State extends State<_Impl> {
             Spacer()
           ]),
         ),
+        _Menu(),
         Expanded(
           child: Padding(
             padding: EdgeInsets.all(8 * scaleX),
@@ -271,6 +255,83 @@ class _State extends State<_Impl> {
           ),
         )
       ],
+    );
+  }
+}
+
+class _Menu extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return _MenuState();
+  }
+}
+
+class _MenuState extends State<_Menu> {
+  var isStarted = false;
+
+  Widget buildButtonContent(String text) {
+    return Container(
+      width: 48 * scaleX,
+      height: 32 * scaleX,
+      child: Center(child: Text(text)),
+      decoration: BoxDecoration(
+        color: Colors.amberAccent,
+        border: Border.all(color: Colors.green),
+        borderRadius: BorderRadius.circular(4 * scaleX),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 360 * scaleX,
+      height: 40 * scaleX,
+      child: Stack(
+        alignment: AlignmentDirectional.center,
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              Spacer(),
+              InkWell(
+                onTap: () {},
+                child: buildButtonContent("攻击"),
+              ),
+              Spacer(),
+              InkWell(
+                onTap: () {},
+                child: buildButtonContent("防御"),
+              ),
+              Spacer(),
+              InkWell(
+                onTap: () {},
+                child: buildButtonContent("技能"),
+              ),
+              Spacer(),
+              InkWell(
+                onTap: () {},
+                child: buildButtonContent("物品"),
+              ),
+              Spacer(),
+              InkWell(
+                onTap: () {},
+                child: buildButtonContent("逃跑"),
+              ),
+            ],
+          ),
+          isStarted
+              ? Text("sss")
+              : RaisedButton.icon(
+                  onPressed: () {
+                    setState(() {
+                      isStarted = true;
+                    });
+                  },
+                  icon: Icon(Icons.play_arrow),
+                  label: Text("开始"),
+                )
+        ],
+      ),
     );
   }
 }
