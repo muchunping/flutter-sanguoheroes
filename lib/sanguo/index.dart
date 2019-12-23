@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:sanguo_heroes/sanguo/models/item.dart';
 import 'package:sanguo_heroes/sanguo/models/scene.dart';
 import 'package:sanguo_heroes/sanguo/models/world_context.dart';
+import 'package:sanguo_heroes/sanguo/pages/backpack.dart';
 import 'package:sanguo_heroes/sanguo/pages/npc_detail.dart';
+import 'package:sanguo_heroes/sanguo/pages/skill.dart';
 import 'package:sanguo_heroes/sanguo/widgets/event_indicator.dart';
 import 'package:sanguo_heroes/sanguo/widgets/location_indicator.dart';
 import 'package:sanguo_heroes/sanguo/widgets/shimmer.dart';
@@ -28,8 +30,22 @@ class MyApp extends StatelessWidget {
         "home": (c) => hp.HomePage(),
         "detail": (c) => NpcDetail(),
 //        "detail": (c) => NewPage(),
+        "menu": (c) => openMenuPage(c),
       },
     );
+  }
+
+  openMenuPage(BuildContext context) {
+    String menu = ModalRoute.of(context).settings.arguments;
+    print(menu);
+    switch(menu){
+      case "技能":
+        return SkillTree();
+      case "背包":
+        return BackpackPage(amount: 100);
+      case "任务":
+        return SkillTree();
+    }
   }
 }
 
