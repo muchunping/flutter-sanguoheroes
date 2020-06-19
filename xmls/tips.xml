@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tip-list>
+    <tip category="help" value="武器分为五大类型：刀(单/双手)，剑(单/双手)，枪(双手)，弓(双手)，杖(双手)"/>
+    <tip category="help" value="人物有10个可穿戴物品槽，依次为主武器，副武器，头，颈，左手镯，右手镯，左戒指，右戒指，身体，足"/>
+    <tip category="help" value="每个人都可以使用任意类型的武器，以及武器关联的技能"/>
+    <tip category="help" value="技能树包含六个部分，五种武器类型各对应一个部分，剩下的一个是通用技能"/>
+    <tip category="help" value="技能分为武器基础技能，物品自带技能，角色所学绝技"/>
+</tip-list>

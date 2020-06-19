@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<stunt-list>
+    <stunt id="001" name="武圣" desc="武力 +17\n物攻 + 1200\n施放[过关斩将]时概率三倍伤害" power="255">
+        <property strength="17" pa="1200"/>
+        <effect skill="001" probability="20" value="3"/>
+    </stunt>
+</stunt-list>

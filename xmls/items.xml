@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<item-list>
+    <item id="0" name="当归" pic="pic1.png" description="当归是人们最常用的补血中药之一"/>
+    <item id="1" name="金银花" pic="pic2.png" description="金银花茶有清热解毒、通经活络，护肤美容之功效"/>
+    <item id="2" name="枸杞" pic="pic3.png" description="枸杞是商品枸杞子、植物宁夏枸杞、中华枸杞等枸杞属物种的统称"/>
+    <item id="3" name="冬虫夏草" pic="pic4.png" description="别称冬虫草，是冬虫夏草菌和蝙蝠蛾科幼虫的复合体"/>
+
+    <item id="1001" name="银子" pic="pic5.png" description="市面上流通的货币，以'文'为单位"/>
+    <item id="1002" name="金子" pic="pic6.png" description="市面上流通的高级货币，以'文'为单位"/>
+    <item id="1003" name="金创药" pic="pic7.png" description="江湖中最常用的疗伤药，可以恢复生命50点"/>
+</item-list>
