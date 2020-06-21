@@ -1,5 +1,5 @@
-import 'package:sanguo_heroes/sanguo/index.dart';
-import 'package:sanguo_heroes/sanguo/models/fighter.dart';
+import 'package:sanguoheroes/sanguo/index.dart';
+import 'package:sanguoheroes/sanguo/models/fighter.dart';
 
 class Player extends Fighter{
   String name = "";

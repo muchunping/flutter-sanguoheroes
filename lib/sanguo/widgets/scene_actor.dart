@@ -1,8 +1,8 @@
 import 'dart:math' as Math;
 
 import 'package:flutter/material.dart';
-import 'package:sanguo_heroes/sanguo/index.dart';
-import 'package:sanguo_heroes/sanguo/models/npc.dart';
+import 'package:sanguoheroes/sanguo/index.dart';
+import 'package:sanguoheroes/sanguo/models/npc.dart';
 
 class SceneShower extends StatelessWidget {
   final List<Npc> npcList;

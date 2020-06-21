@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:sanguo_heroes/sanguo/index.dart';
+import 'package:sanguoheroes/sanguo/index.dart';
 
 main() =>
     runApp(MaterialApp(home: Scaffold(body: SafeArea(child: SkillTree()))));

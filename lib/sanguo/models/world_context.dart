@@ -1,9 +1,9 @@
 import 'package:flutter/services.dart';
-import 'package:sanguo_heroes/sanguo/models/equipment.dart';
-import 'package:sanguo_heroes/sanguo/models/item.dart';
-import 'package:sanguo_heroes/sanguo/models/npc.dart';
-import 'package:sanguo_heroes/sanguo/models/player.dart' as p;
-import 'package:sanguo_heroes/sanguo/models/scene.dart';
+import 'package:sanguoheroes/sanguo/models/equipment.dart';
+import 'package:sanguoheroes/sanguo/models/item.dart';
+import 'package:sanguoheroes/sanguo/models/npc.dart';
+import 'package:sanguoheroes/sanguo/models/player.dart' as p;
+import 'package:sanguoheroes/sanguo/models/scene.dart';
 import "package:xml/xml.dart" as xml;
 
 class WorldContext {

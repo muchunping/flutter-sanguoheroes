@@ -2,25 +2,35 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sanguo_heroes/sanguo/index.dart';
-import 'package:sanguo_heroes/sanguo/models/fighter.dart';
-import 'package:sanguo_heroes/sanguo/models/fighter_group.dart';
-import 'package:sanguo_heroes/sanguo/models/player.dart';
+import 'package:sanguoheroes/sanguo/index.dart';
+import 'package:sanguoheroes/sanguo/models/fighter.dart';
+import 'package:sanguoheroes/sanguo/models/fighter_group.dart';
+import 'package:sanguoheroes/sanguo/models/player.dart';
 
-main() => runApp(MaterialApp(
-      home: Scaffold(
-        body: SafeArea(
-            child: Battlefield(
-          attackerSide: FighterGroup(mainFighter: attacker(), fighters: {
-            "a": attacker()..speed = 105,
-            "b": attacker()..speed = 110
-          }),
+main() => runApp(MaterialApp(home: BattlefieldPage()));
+
+class BattlefieldPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SafeArea(
+        child: Battlefield(
+          attackerSide: FighterGroup(
+            mainFighter: attacker(),
+            fighters: {
+              "a": attacker()..speed = 105,
+              "b": attacker()..speed = 110
+            },
+          ),
           defenderSide: FighterGroup(
-              mainFighter: defender(),
-              fighters: {"a": attacker()..speed = 104}),
-        )),
+            mainFighter: defender(),
+            fighters: {"a": defender()..speed = 104},
+          ),
+        ),
       ),
-    ));
+    );
+  }
+}
 
 Player attacker() {
   Player attacker = Player();
@@ -239,7 +249,9 @@ class _Impl extends StatelessWidget {
             Spacer()
           ]),
         ),
-        _Menu(),
+        _Menu(() {
+          beginFight(context);
+        }),
         Expanded(
           child: Padding(
             padding: EdgeInsets.all(8 * scaleX),
@@ -260,6 +272,10 @@ class _Impl extends StatelessWidget {
 }
 
 class _Menu extends StatefulWidget {
+  final Function param0;
+
+  _Menu(this.param0);
+
   @override
   State<StatefulWidget> createState() {
     return _MenuState();
@@ -325,6 +341,7 @@ class _MenuState extends State<_Menu> {
                   onPressed: () {
                     setState(() {
                       isStarted = true;
+                      Function.apply(widget.param0, null);
                     });
                   },
                   icon: Icon(Icons.play_arrow),

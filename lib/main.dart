@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:sanguo_heroes/sanguo/widgets/glint_button.dart';
-import 'package:sanguo_heroes/sanguo/widgets/progress_bar_samples.dart';
+
+import 'sanguo/widgets/progress_bar_samples.dart';
 
 void main() => runApp(MyApp());
 

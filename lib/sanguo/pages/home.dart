@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:sanguo_heroes/sanguo/index.dart';
-import 'package:sanguo_heroes/sanguo/widgets/main_top.dart';
-import 'package:sanguo_heroes/sanguo/widgets/scene_actor.dart';
+import 'package:sanguoheroes/sanguo/index.dart';
+import 'package:sanguoheroes/sanguo/widgets/main_top.dart';
+import 'package:sanguoheroes/sanguo/widgets/scene_actor.dart';
 
 main() => runApp(MaterialApp(
       home: HomePage(),

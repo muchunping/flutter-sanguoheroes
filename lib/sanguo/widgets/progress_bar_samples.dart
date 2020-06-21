@@ -1,6 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:sanguo_heroes/sanguo/widgets/progress_bar2.dart';
+import 'package:sanguoheroes/sanguo/widgets/progress_bar2.dart';
 
 class GradientCircularProgressRoute extends StatefulWidget {
   @override
@@ -57,6 +57,7 @@ class GradientCircularProgressRouteState
                   child: Column(
                     children: <Widget>[
                       Wrap(
+                        textDirection: TextDirection.ltr,
                         spacing: 10.0,
                         runSpacing: 16.0,
                         children: <Widget>[

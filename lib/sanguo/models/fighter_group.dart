@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sanguo_heroes/sanguo/models/fighter.dart';
+import 'package:sanguoheroes/sanguo/models/fighter.dart';
 
 class FighterGroup {
   final Map<String, Fighter> fighters;

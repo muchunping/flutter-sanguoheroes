@@ -1,17 +1,18 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:sanguo_heroes/sanguo/models/item.dart';
-import 'package:sanguo_heroes/sanguo/models/scene.dart';
-import 'package:sanguo_heroes/sanguo/models/world_context.dart';
-import 'package:sanguo_heroes/sanguo/pages/backpack.dart';
-import 'package:sanguo_heroes/sanguo/pages/npc_detail.dart';
-import 'package:sanguo_heroes/sanguo/pages/skill.dart';
-import 'package:sanguo_heroes/sanguo/widgets/event_indicator.dart';
-import 'package:sanguo_heroes/sanguo/widgets/location_indicator.dart';
-import 'package:sanguo_heroes/sanguo/widgets/shimmer.dart';
-import 'package:sanguo_heroes/sanguo/pages/home.dart' as hp;
-import 'package:sanguo_heroes/demo/privoders.dart';
+import 'package:sanguoheroes/sanguo/models/item.dart';
+import 'package:sanguoheroes/sanguo/models/scene.dart';
+import 'package:sanguoheroes/sanguo/models/world_context.dart';
+import 'package:sanguoheroes/sanguo/pages/backpack.dart';
+import 'package:sanguoheroes/sanguo/pages/battlefield.dart';
+import 'package:sanguoheroes/sanguo/pages/npc_detail.dart';
+import 'package:sanguoheroes/sanguo/pages/skill.dart';
+import 'package:sanguoheroes/sanguo/widgets/event_indicator.dart';
+import 'package:sanguoheroes/sanguo/widgets/location_indicator.dart';
+import 'package:sanguoheroes/sanguo/widgets/shimmer.dart';
+import 'package:sanguoheroes/sanguo/pages/home.dart' as hp;
+import 'package:sanguoheroes/demo/privoders.dart';
 
 main() => runApp(MyApp());
 
@@ -44,7 +45,7 @@ class MyApp extends StatelessWidget {
       case "背包":
         return BackpackPage(amount: 100);
       case "任务":
-        return SkillTree();
+        return BattlefieldPage();
     }
   }
 }
